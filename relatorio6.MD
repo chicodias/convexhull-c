@@ -15,7 +15,8 @@ Informação necessária para compilação e execução do programa, indicando q
 
 ## Parte 3 - Análise de Eficiência e Relatório
 
-- Medir tempo de exec
+- Medir tempo de execução
 - gráfico de escalabilidade
 - análise de complexidade utilizando O
 - explicar o resultado, relacionando o algoritmo utilizado com a complexidade computacional do algoritmo implementado. Crescimento do tempo, melhor e pior casos.
+  
