@@ -1,0 +1,26 @@
+Description of Pseudo-Languange to Computational Geometry Program.
+Authors: Campos, Cassio
+         Freitas, Eduardo
+Department of Computer Science - University of Sao Paulo.
+
+
+
+mode <m>
+where m E { NORMAL, XOR }
+
+
+line <x1> <y1> <x2> <y2> <color>
+  where (x1,y1) and (x2,y2) are initial and final cordenates of the line.
+        color E { WHITE, BLUE, GREEN, YELLOW, RED, MAGENTA, CYAN, BLACK, ... }
+
+
+pixel <x> <y> <color>
+  where (x,y) are cordenates
+        color E { WHITE, BLUE, GREEN, YELLOW, RED, MAGENTA, CYAN, BLACK, ... }
+
+
+text <x> <y> <string>
+  where (x,y) are cordenates
+        string is a sequence of caracters (not "), beginning and ending with " 
+
+#comments to end of line ........

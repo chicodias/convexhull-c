@@ -1,0 +1,29 @@
+------------------------------------------------------------------------------
+Programa CG. Por Cassio Polpo de Campos.
+------------------------------------------------------------------------------
+TRIANG3.TXT : calcula a triangularizacao de poligono O(n*n*n)
+------------------------------------------------------------------------------
+
+	Este algoritmo faz a triangularizacao de um poligono em ordem
+
+cubica. Ele se baseia no fato que cada poligono possui pelo menos 2
+
+orelhas (esta prova pode ser encontrada em diversos livros na area). 
+
+Entao percorremos todos os pontos procurando-as e cada vez que uma 
+
+orelha eh encontrada, tracamos a diagonal e repetimos o processo, agora
+
+com um poligono com um ponto a menos para processar.
+
+
+-----------------------------------------------------------------------
+-> Complexidade: teremos que percorrer todos os pontos no maximo n/2
+	    
+		 vezes. Cada vez gasta n*(gasto para testar se um
+
+		 ponto eh orelha=n). Portanto o algoritmo tem O(n*n*n).
+
+------------------------------------------------------------------------------
+TRIANG3.TXT - Fim
+------------------------------------------------------------------------------

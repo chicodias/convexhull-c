@@ -1,0 +1,726 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE></TITLE>
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.0Gold (X11; I; Linux 2.0.0 i586) [Netscape]">
+</HEAD>
+<BODY>
+
+<H1>Dialogs</H1>
+
+<H3>Overview</H3>
+
+<UL>
+<LI><A HREF="#structure">The <B><TT>DIALOG</TT></B>&nbsp;and <B><TT>MENU</TT></B>
+structures</A></LI>
+
+<LI><A HREF="#flags">Flags</A></LI>
+
+<LI><A HREF="#messages">Messages</A></LI>
+
+<LI><A HREF="#stdcontrols">Standard controls</A></LI>
+
+<LI><A HREF="#creating">Creating</A></LI>
+
+<LI><A HREF="#manager">The dialog manager</A></LI>
+
+<LI><A HREF="#functions">Functions and variables</A></LI>
+</UL>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H3><A NAME="structure"></A>The DIALOG&nbsp;structure</H3>
+
+<P>A&nbsp;dialog structure contains all information about a dialog control.
+A&nbsp;dialog, then, is represented by an array of dialog structures:</P>
+
+<PRE>typedef struct DIALOG {
+  int (*proc)(int, WINDOW&nbsp;*, DIALOG&nbsp;*, int);  /* Control procedure        */
+  int x, y;                                   /* Position                 */
+  int w, h;                                   /* Size                     */
+  int fg, bg;                                 /* Colors (fore/background) */
+  int flags;                                  /* Flags                    */
+  int d1, d2;                                 /* Data                     */
+  void *dp, *dp1;                             /* Data pointers            */
+  int d3, d4, d5;                             /* More data                */
+  int draw_x, draw_y, draw_w, draw_h;         /* Exposed rectangle        */
+  WINDOW *win;                                /* Control window           */
+} DIALOG;</PRE>
+
+<P>The fields are explained below:</P>
+
+<PRE><B>proc</B></PRE>
+
+<UL>
+<P>This is a pointer to a function that will control the control behaviour.
+XDialogs&nbsp;provides some &quot;standard&nbsp;control&quot; procedures
+that you can use and extend them for your own needs. The function should
+be something like</P>
+
+<PRE><B><TT>int control_proc(int msg, WINDOW&nbsp;*w, DIALOG&nbsp;*dlg, int c);</TT></B></PRE>
+
+<P>It will be called when the dialog manager has something to say to the
+control (a &quot;message&quot;), for example, when the control has been
+clicked or when it needs repainting. Thus, this function is responsible
+for all behaviour and appearance of the control. More on this in the section
+<A HREF="#messages">Messages</A>, below. You can use any function to control
+dialog controls, with one restriction:&nbsp;the first control in a dialog
+array MUST&nbsp;have proc set to <B><TT>window_proc</TT></B> (he first
+control in a dialog array is not really a control, it is the dialog window).This
+function should return one of the D_xxx values explained below in response
+to the message.</P>
+</UL>
+
+<P><B><TT>x</TT></B>, <B><TT>y</TT></B>, <B><TT>w</TT></B>, <B><TT>h</TT></B></P>
+
+<UL>
+<P>The position (<B><TT>x</TT></B>, <B><TT>y</TT></B>), the width (<B><TT>w</TT></B>)
+and the height (<B><TT>h</TT></B>)&nbsp;of the control in the dialog window.</P>
+</UL>
+
+<P><B><TT>fg</TT></B>, <B><TT>bg</TT></B></P>
+
+<UL>
+<P>The foregroung and background colors.</P>
+</UL>
+
+<P><B><TT>flags</TT></B></P>
+
+<UL>
+<P>The dialog flags. More on this in the <A HREF="#flags">Flags</A> section,
+below.</P>
+</UL>
+
+<P><B><TT>d1</TT></B>, <B><TT>d2</TT></B>, <B><TT>dl</TT></B></P>
+
+<UL>
+<P>Some data used by the control procedures.</P>
+</UL>
+
+<P><B><TT>dp</TT></B>, <B><TT>dp1</TT></B></P>
+
+<UL>
+<P>Some data pointers used by the control procedures.</P>
+</UL>
+
+<P><B><TT>draw_x</TT></B>, <B><TT>draw_y</TT></B>, <B><TT>draw_w</TT></B>,
+<B><TT>draw_h</TT></B></P>
+
+<UL>
+<P>When the control receives a <B><TT>MSG_DRAW</TT></B> message with the
+`<B><TT>c</TT></B>' parameter with a value of <B><TT>1</TT></B> (a &quot;soft&quot;
+draw), these fields are set to the rectangle that actually needs repainting.
+Most of the tandard controls ignore this and redraw the entire control.</P>
+</UL>
+
+<P><B><TT>win</TT></B></P>
+
+<UL>
+<P>Apointer to the <B><TT>WINDOW</TT></B> structure that owns the control.
+You must draw the control in this window.</P>
+</UL>
+
+<P>Like a dialog, a menu is an array of <B><TT>MENU</TT></B> structures.
+There are two ways of creating a menu: you can place a menu control in
+a dialog using the `<B><TT>menu_proc</TT></B>' standard control procedure;
+or you can call <B><TT>do_menu()</TT></B> to pop up a menu somewhere on
+the screen.</P>
+
+<PRE>typedef struct MENU {
+  char *text;                     /* Item text */
+  int (*proc)(WINDOW *, int);     /* Function called when the menu is clicked */
+  struct MENU *child;             /* Child menu */
+  int id;                         /* ID to pass to function */
+} MENU;</PRE>
+
+<P>The fields are:</P>
+
+<PRE><B>text</B></PRE>
+
+<UL>
+<P>The menu item text. It should be an empty string for a separator. The
+last item of the menu array must have a text pointing to NULL to indicate
+the end of the array.</P>
+</UL>
+
+<PRE><B>proc</B></PRE>
+
+<UL>
+<P>If not <B><TT>NULL</TT></B>, it should point to a function that will
+be called when the menu is clicked. The first parameter will be the menu
+parent window (see the <B><TT>menu_proc</TT></B> menu control procedure
+or the comments in the <B><TT>do_menu</TT></B> function). The second parameter
+will be the `<B><TT>id</TT></B>' field of the menu structure (it is useful
+to use the same function to an entire menu, instead of one function for
+each menu item).This function should return one of the D_xxx values as
+returned by the control procedures.</P>
+</UL>
+
+<PRE><B>child</B></PRE>
+
+<UL>
+<P>This can be a pointer to another menu array that will be displayed when
+the menu item is clicked.</P>
+</UL>
+
+<PRE><B>id</B></PRE>
+
+<UL>
+<P>This will be passed to the menu procedure when the menu item is clicked.</P>
+</UL>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H3><A NAME="flags"></A>Flags</H3>
+
+<P>The dialog flags control the apearance and status of a control. The
+available flags are:</P>
+
+<P><B><TT>D_EXIT</TT></B></P>
+
+<UL>
+<P>When this flags is set, the control procedure should return <B><TT>D_CLOSE</TT></B>&nbsp;(indicating
+to the dialog manager that the dialog should be closed) when the user takes
+some action in the control (for example, a click in buttons or a double-click
+in lists).</P>
+</UL>
+
+<P><B><TT>D_GOTMOUSE</TT></B></P>
+
+<UL>
+<P>The dialog manager sets and clears this flags when the mouse goes in
+or out of the control rectangle, in addition of sending a <B><TT>MSG_GOTMOUSE</TT></B>
+or <B><TT>MSG_LOSTMOUSE</TT></B>&nbsp;messages.</P>
+</UL>
+
+<P><B><TT>D_SELECTED</TT></B></P>
+
+<UL>
+<P>In buttons, it is used when the button is depressed.</P>
+</UL>
+
+<P><B><TT>D_AUTOW</TT></B></P>
+
+<P><B><TT>D_AUTOH</TT></B></P>
+
+<UL>
+<P>When set, the control procedure should set the width and/or height of
+the control according to its contents or position when it is initialized
+(i.e., when it receives a <B><TT>MSG_INIT</TT></B> message). Each control
+is free to define how it will affect its behaviour, see the standard control
+procedures to a description on how this affects each one of the standard
+controls.</P>
+</UL>
+
+<P><B><TT>D_DISABLED</TT></B></P>
+
+<UL>
+<P>When the &quot;window&quot;&nbsp;control has this flag set, then the
+entire dialog is disabled, i.e., it will not receive any input (although
+it will continue to receive repaint requests whenever it is necessary).</P>
+</UL>
+
+<P><B><TT>D_3D</TT></B></P>
+
+<UL>
+<P>When this flag is set, the control should draw itself in a &quot;3D&quot;&nbsp;aspect.
+Not all of the standard controls support this (yet), though.</P>
+</UL>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H3><A NAME="messages"></A>Messages</H3>
+
+<P>When the dialog manager has something to &quot;tell&quot;&nbsp;to a
+control, it sends a message to it. Dialog controls can exchange messages
+between them, too.</P>
+
+<P>To send a message to a control, just call the macro</P>
+
+<UL>
+<PRE><B>SEND_MESSAGE(msg, dialog, c)</B></PRE>
+</UL>
+
+<P>`<B><TT>dialog</TT></B>' should be a pointer to a dialog structure corresponding
+to the control. This macro will call the dialog control procedure with
+the message `<B><TT>msg</TT></B>'. The integer `<B><TT>c</TT></B>' will
+be passed to the control procedure, containing any message-specific data.</P>
+
+<P>Any control procedure is free to ignore any message, it should return
+<B><TT>D_O_K</TT></B> if it does it. It should do it if the returned value
+is ignored by the dialog manager, for future compatibility. A&nbsp;control
+should at least respond to <B><TT>MSG_DRAW</TT></B>&nbsp;messages by redrawing
+itself, though (that is, if you want the control to be visible). The available
+messages are:</P>
+
+<P><B><TT>MSG_INIT</TT></B></P>
+
+<UL>
+<P>Sent to all controls when the dialog is being initializated. The control
+is not visible yet, so this is the time to change background colours, border
+width, etc. Also, if the control needs to allocate memory, it should do
+it now. The return value is ignored.</P>
+</UL>
+
+<P><B><TT>MSG_END</TT></B></P>
+
+<UL>
+<P>Sent to all controls when the dialog terminates. The control should
+still be visible (unless someone has explicitly hidden its window), but
+its window is going to be closed. The returned value is ignored.</P>
+</UL>
+
+<P><B><TT>MSG_IDLE</TT></B></P>
+
+<UL>
+<P>Sent to all controls when the dialog manager has nothing better to do.
+The returned value is ignored.</P>
+</UL>
+
+<P><B><TT>MSG_DRAW</TT></B></P>
+
+<UL>
+<P>Sent to a control when it needs repainting. The returned value is ignored.</P>
+</UL>
+
+<P><B><TT>MSG_KEY</TT></B></P>
+
+<UL>
+<P>Sent to a control when it received a key from the keyboard. The key
+code is in the `c' parameter of the control procedure. The dialog control
+procedure should return <B><TT>D_USED_CHAR</TT></B>&nbsp;if it ised the
+key, or <B><TT>D_O_K</TT></B> if it did not (in the later case, the dialog
+manager will try to use the key to move the focus around the dialog controls).</P>
+</UL>
+
+<P><B><TT>MSG_CLICK</TT></B></P>
+
+<UL>
+<P>Sent to a control when the mouse is pressed while in the control area.
+The control procedure can return D_CLOSE&nbsp;to close the dialog (tipically
+some buttons do this).</P>
+</UL>
+
+<P><B><TT>MSG_DCLICK</TT></B></P>
+
+<UL>
+<P>Sent to a control when the mouse is double-clicked while in the control
+area. Note that <B><TT>MSG_CLICK</TT></B>&nbsp;is sent when the firt click
+is given. The control procedure can return <B><TT>D_CLOSE</TT></B>&nbsp;to
+close the dialog.</P>
+</UL>
+
+<P><B><TT>MSG_WANTFOCUS</TT></B></P>
+
+<UL>
+<P>Sent to the dialog manager when the user tries to give input focus to
+the control. If the control returns <B><TT>D_WANTFOCUS</TT></B>, then the
+input focus will (possibily)&nbsp;changet to it (if and when this happens,
+the control will receive another message, <B><TT>MSG_GOTFOCUS</TT></B>).
+The control should return <B><TT>D_O_K</TT></B>&nbsp;if it doesn't want
+the input focus.</P>
+</UL>
+
+<P><B><TT>MSG_GOTFOCUS</TT></B></P>
+
+<UL>
+<P>Sent when the control gains the input focus.The returned value is ignored.</P>
+</UL>
+
+<P><B><TT>MSG_&nbsp;LOSTFOCUS</TT></B></P>
+
+<UL>
+<P>Sent when the control loses the input focus.The returned value is ignored.</P>
+</UL>
+
+<P><B><TT>MSG_GOTMOUSE</TT></B></P>
+
+<UL>
+<P>Sent when the mouse enters the control area. The return value is ignored.</P>
+</UL>
+
+<P><B><TT>MSG_LOSTMOUSE</TT></B></P>
+
+<UL>
+<P>Sent when the mouse leaves the control area. The return value is ignored.</P>
+</UL>
+
+<P><B><TT>MSG_RESIZE</TT></B></P>
+
+<UL>
+<P>Sent to all controls when the dialog window is resized. The return value
+is ignored.</P>
+</UL>
+
+<P><B><TT>MSG_USER</TT></B></P>
+
+<UL>
+<P>This message and messages with numbers greater then that will never
+be sent by the dialog manager, so you can use it&nbsp;to exchange custom
+messages between your controls.</P>
+</UL>
+
+<P>Here is a list of the possible return values:</P>
+
+<P><B><TT>D_O_K</TT></B></P>
+
+<UL>
+<P>This indicates that nothing should be done, i.e., the execution should
+continue normally (tipically, a control procedure should return this if
+it wants to ignore the message).</P>
+</UL>
+
+<P><B><TT>D_CLOSE</TT></B></P>
+
+<UL>
+<P>The dialog should be terminated. When a control responds a message returning
+<B><TT>D_CLOSE</TT></B>, the dialog manager hides the dialog window and
+marks it to terminate, but the dialog will not be terminated (i.e., the
+the controls will not receive a <B><TT>MSG_END</TT></B> message) until
+<B><TT>end_dialog()</TT></B> is called (this is done automatically if you
+show a dialog with <B><TT>do_dialog()</TT></B>&nbsp;or <B><TT>do_dialog_window()</TT></B>,
+see the section <A HREF="#creating">Creating</A> for details.</P>
+</UL>
+
+<P><B><TT>D_WANTFOCUS</TT></B></P>
+
+<UL>
+<P>This should be only returned in response to a <B><TT>MSG_WANTFOCUS</TT></B>
+message to indicate that the control wants to receive the input focus.
+If and when the control receives the input focus, it will receive another
+message, <B><TT>MSG_GOTFOCUS</TT></B>.</P>
+</UL>
+
+<P><B><TT>D_USED_CHAR</TT></B></P>
+
+<UL>
+<P>This should be returned only in response to a <B><TT>MSG_KEY</TT></B>
+message to indicate that the key was used by the control, and thus should
+not be used by the dialog manager.</P>
+</UL>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H3><A NAME="stdcontrols"></A>Standard Controls</H3>
+
+<P>XDialogs&nbsp;provides some standard control procedures, allowing you
+to create standard controls in a dialog or extend them creating your own
+control procedures and calling the standard procedures for default behaviour.</P>
+
+<P>For example, if you want to do a button with an image instead of a text,
+you would probably want to do a control procedure that draws the control
+on <B><TT>MSG_DRAW</TT></B>&nbsp;messages and pass all other messages to
+the standard button procedure.</P>
+
+<P>The standard control functions are:</P>
+
+<P><B><TT>window_proc</TT></B></P>
+
+<UL>
+<P>This MUST&nbsp;be the control procedure for the first control in the
+dialog array. You CAN'T&nbsp;replace it with another control procedure
+that calls it for default behaviour.The members <B><TT>d1</TT></B>, <B><TT>d2</TT></B>,
+..., <B><TT>d5</TT></B> of the dialog structure are reserved and MUST&nbsp;be
+set to zero before you create a window to the dialog (this is not a problem
+if you define the dialog array globally in a source file or statically
+in a function, because the compiler will zero the fields you don't specify).</P>
+</UL>
+
+<P><B><TT>button_proc</TT></B></P>
+
+<UL>
+<P>A&nbsp;button. The field `<B><TT>dp</TT></B>' must point to a null-terminated
+string containing the text to appear in the button. If the <B><TT>D_EXIT</TT></B>&nbsp;flag
+is set, the button will return <B><TT>D_CLOSE</TT></B>&nbsp;when it is
+clicked.</P>
+</UL>
+
+<P><B><TT>text_proc</TT></B></P>
+
+<UL>
+<P>A&nbsp;static text. The field `<B><TT>dp</TT></B>' must point to a null-terminated
+string containing the text to be shown. The `<B><TT>d1</TT></B>' field
+controls the text alignment:&nbsp;<B><TT>0</TT></B> means left aligned,
+<B><TT>1</TT></B> means centered and <B><TT>2</TT></B> means right aligned.</P>
+</UL>
+
+<P><B><TT>hline_proc</TT></B>, <B><TT>box_proc</TT></B>, <B><TT>fillbox_proc</TT></B></P>
+
+<UL>
+<P>A horizontal line, a rectangle and a filled rectangle, respectively.</P>
+</UL>
+
+<P><B><TT>edit_proc</TT></B></P>
+
+<UL>
+<P>A&nbsp;text editing control. The field `<B><TT>dp</TT></B>' must point
+to the null-terminated to be edited. The field `<B><TT>d1</TT></B>' contains
+the current cursor position, and the field `<B><TT>d2</TT></B>' contains
+the maximum number of characters accepted (not counting the null-terminator.
+The field `<B><TT>d3</TT></B>' is set to the index of the character on
+the left of the display (this allows horizontal scrolling of the text).
+The fields `<B><TT>d4</TT></B>' and `<B><TT>d5</TT></B>' indicate the selection:&nbsp;if
+<B><TT>d4 &gt;= d5</TT></B>, then o text is selected; otherwise, `<B><TT>d4</TT></B>'
+stores the index of the first selected character and `<B><TT>d5</TT></B>'
+stores the index of the last selected character.</P>
+</UL>
+
+<P><B><TT>password_proc</TT></B></P>
+
+<UL>
+<P>Like the text editing control, but does not display the text.</P>
+</UL>
+
+<P><B><TT>image_proc</TT></B></P>
+
+<UL>
+<P>A&nbsp;rectangle contaning any image. You can use the standard output
+functions to draw in its window.</P>
+</UL>
+
+<P><B><TT>list_proc</TT></B></P>
+
+<UL>
+<P>A&nbsp;list of strings. The field `<B><TT>dp</TT></B>' must point to
+a function that will return the shown text strings:</P>
+
+<PRE><B>char *list_getter(int index, int *nitems);</B></PRE>
+
+<P>When the list wants to know the number of items, it will call this function
+with <B><TT>index = -1</TT></B>. This function, then, should set <B><TT>*nitems</TT></B>
+to the number of items and rerurn <B><TT>NULL</TT></B>. When the list wants
+to get the string of an item, it will call this function with <B><TT>index
+= (the index of the item)</TT></B> and <B><TT>nitems = NULL</TT></B>. The
+function should, then, return a pointer to a null-terminated string containing
+the text of the requested item. The field `<B><TT>d1</TT></B>' contains
+the index of the currently selected item, and `<B><TT>d2</TT></B>' contains
+the index of the item currently on the top of the list.</P>
+</UL>
+
+<P><B><TT>menu_proc</TT></B></P>
+
+<UL>
+<P>A&nbsp;menu. The field `<B><TT>dp</TT></B>' should point to an array
+of <B><TT>MENU</TT></B>&nbsp;structures. The items will be displayed in
+the same line, and should have childs to be popped-up when an item is clicked.</P>
+</UL>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H3><A NAME="creating"></A>Creating dialogs</H3>
+
+<P>There are some different ways if creating a dialog, depending on if
+you want more or less control over the dialog. In the simplest case, if
+you just have a dialog in an array of <B><TT>DIALOG</TT></B>&nbsp;structures
+and want to execute that dialog and wait upon its termination, you should
+call</P>
+
+<PRE><B>int do_dialog_window(WINDOW&nbsp;*parent, DIALOG&nbsp;*dialog, int stop);</B></PRE>
+
+<P>This function will call <B><TT>create_window()</TT></B> to create a
+window for the <B><TT>dialog</TT></B> and its controls, show them, execute
+the dialog until it is explicitily terminated (by a returned value of <B><TT>D_CLOSE</TT></B>
+in response to a message, see <A HREF="#messages">Messages</A> above),&nbsp;and
+then close the created windows with <B><TT>close_window()</TT></B>. If
+the <B><TT>parent</TT></B> window contains a dialog, and `<B><TT>stop</TT></B>'
+is not zero, the parent window's dialog will be disabled, which means that
+it will still receive redraw notification when it is needed, but will not
+receive mouse and keyboard input.</P>
+
+<P>If you already have created a window for a dialog and want to execute
+it, call do_dialog():</P>
+
+<P><B><TT>int do_dialog(WINDOW *dialog_window, int stop, int focus);</TT></B></P>
+
+<P>The `<B><TT>dialog_window</TT></B>' is the window containing the dialog.
+`<B><TT>stop</TT></B>' is like in <B><TT>do_dialog_window()</TT></B>. `<B><TT>focus</TT></B>'
+should be the index of the control to receive the input focus (or <B><TT>-1</TT></B>,
+in which case the function will pick a control).</P>
+
+<P>If you don't want to wait until the dialog has been finished (e.g.,
+if you want to do some &quot;background processing&quot;), you can call
+<TT><A HREF="windows.html#creating">create_window()</A></TT> to create
+the window for the dialog and then call</P>
+
+<PRE><B>void init_dialog(WINDOW&nbsp;*win, int stop, int focus);</B></PRE>
+
+<P>to initialize the dialog (i.e., show the window, set the control with
+the input focus and send <B><TT>MSG_INIT</TT></B>&nbsp;to all of its controls).
+`<B><TT>stop</TT></B>' should be zero if you want to the parent window
+dialog (if any) to remain enabled, passing a value of 1 will prevent the
+parent window dialog controls of receiving mouse and keyboard input (although
+<B><TT>MSG_DRAW</TT></B> messages will still be sent when the controls
+need repainting). `<B><TT>focus</TT></B>' is an integer containing the
+index of the control that is to receive the input focus; if it is <B><TT>-1</TT></B>,
+the function will chose one. After that, you should call</P>
+
+<PRE><B>int do_dialog_step(WINDOW&nbsp;*win);</B></PRE>
+
+<P>This will give a chance to the dialog receive message notifications
+such as keyboard and mouse input and redrawing requests. You should call
+it periodically, if you fail to do so, the dialog will not work properly.
+This function returns <B><TT>0</TT></B> if the dialog has terminated its
+job (i.e., if a control returns a <B><TT>D_CLOSE</TT></B> requesting its
+termination), or <B><TT>1</TT></B> if it should continue. When this function
+returns <B><TT>0</TT></B>, or when you want to force the dialog termination,
+you should call</P>
+
+<PRE><B>int end_dialog(WINDOW&nbsp;*win);</B></PRE>
+
+<P>This function will send the message <B><TT>MSG_END</TT></B> to all the
+dialog controls, release the parent window (if any) and return the index
+of the control in the <B><TT>DIALOG</TT></B>&nbsp;array that caused the
+dialog to terminate (<B><TT>-1</TT></B> if none). After that, you should
+call <TT><A HREF="windows.html#closing">close_window()</A></TT>&nbsp;to
+close the dialog window.</P>
+
+<P>There is a function to do all this job, you should call it if you have
+a window created and want to execute its dialog:</P>
+
+<PRE><B>int do_dialog(WINDOW&nbsp;*win, int stop, int focus);</B></PRE>
+
+<P>This function does excactly this:</P>
+
+<UL>
+<PRE>init_dialog(win, stop, focus);</PRE>
+
+<PRE>while (do_dialog_step(win));</PRE>
+
+<PRE>return end_dialog(win);</PRE>
+</UL>
+
+<P>To learn how the dialog manager works, see the next section.</P>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H3><A NAME="manager"></A>The dialog window manager</H3>
+
+<P>The dialog window manager is just a function that receives messages
+from X&nbsp;and generates corresponding messages to the controls in a dialog.
+It is not run in the background, but it is activated when you call some
+functions: for example, when you read the mouse status of in a window with
+<B><TT>win_read_mouse()</TT></B>, or when you call <B><TT>do_dialog_step()</TT></B>
+for a dialog, the manager is activated to all your windows. It is also
+possible to call it explicity by a call to <B><TT>window_manager()</TT></B>,
+you should do this if your program stays too much time without calling
+one of the functions mentioned above.</P>
+
+<P>The dialog window manager is also responsible for putting keys in the
+keyboard buffer for windows without a dialog (for windows with a dialog,
+the buffer is not used, and the keys are sent directly to the control that
+owns the input focus by <B><TT>MSG_KEY</TT></B>&nbsp;messages) and for
+repainting windows without a dialog (windows with dialogs are not repainted,
+their controls receive <B><TT>MSG_DRAW</TT></B>&nbsp;messages).</P>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H3><A NAME="functions"></A>Functions and variables</H3>
+
+<PRE><B><TT>extern int gui_fg_color, gui_bg_color;</TT></B></PRE>
+
+<UL>
+<P>The color used by the sdandard dialogs.</P>
+</UL>
+
+<P><B><TT>extern int xd_back_3d, xd_shadow_3d, xd_light_3d;</TT></B></P>
+
+<UL>
+<P>The colors used by 3D controls.</P>
+</UL>
+
+<P><B><TT>extern int xd_stddlg_3d;</TT></B></P>
+
+<UL>
+<P>If set to <B><TT>1</TT></B>, the standard dialogs will have all controls
+in 3D.</P>
+</UL>
+
+<PRE><B>void do_dialog_window(WINDOW&nbsp;*parent, DIALOG&nbsp;*dialog, int stop_parent);</B></PRE>
+
+<UL>
+<P>Creates a window for a dialog and runs it. if `<B><TT>stop_parent</TT></B>'
+is <B><TT>0</TT></B>, the parent window dialog (if any) continues to receive
+all messages; if it is <B><TT>1</TT></B>, the parent window dialog will
+not receive any mouse or keyboard input.</P>
+</UL>
+
+<P><B><TT>void do_dialog(WINDOW&nbsp;*window, int stop_parent, int focus);</TT></B></P>
+
+<UL>
+<P>Initializes and executes the dialog of the window. `<B><TT>stop_parent</TT></B>'
+is the same as in <B><TT>do_dialog_window()</TT></B>, `<B><TT>focus</TT></B>'
+is the index of the dialog control to receive the focus (can be <B><TT>-1</TT></B>,
+in this case, a control will be chosen).</P>
+</UL>
+
+<P><B><TT>void init_dialog(WINDOW&nbsp;*window, int stop_parent, int focus);</TT></B></P>
+
+<UL>
+<P>Initializes the dialog sending a <B><TT>MSG_INIT</TT></B> message to
+all controls and setting the focus according to `<B><TT>focus</TT></B>'
+(as in <B><TT>do_dialog()</TT></B>). `<B><TT>stop_parent</TT></B>' is the
+same as in <B><TT>do_dialog_window()</TT></B>.</P>
+</UL>
+
+<P><B><TT>int do_dialog_step(WINDOW&nbsp;*window);</TT></B></P>
+
+<UL>
+<P>Calls the dialog manager and returns <B><TT>0</TT></B> if the dialog
+has been terminated, or <B><TT>1</TT></B> if it keeps running.</P>
+</UL>
+
+<P><B><TT>int end_dialog(WINDOW&nbsp;*window);</TT></B></P>
+
+<UL>
+<P>Terminates the dialog by sending a message <B><TT>MSG_END</TT></B> to
+all of its controls, and returns the index of the control with the focus
+when the dialog terminated (tipically, the control that was responsible
+for the dialog termination), or <B><TT>-1</TT></B> of no control had the
+input focus.</P>
+</UL>
+
+<PRE><B>void set_dialog_color(DIALOG&nbsp;*dlg, int fg, int bg);</B></PRE>
+
+<UL>
+<P>Sets the color of an array of dialog structures.</P>
+</UL>
+
+<PRE><B>void set_dialog_flag(DIALOG&nbsp;*dlg, int flag, int set);</B></PRE>
+
+<UL>
+<P>Sets (if <B><TT>set = 1</TT></B>)&nbsp;or clears (if <B><TT>set = 0</TT></B>)
+the <B><TT>flag</TT></B> of an aray of dialog structures.</P>
+</UL>
+
+<PRE><B>void set_dialog_position(DIALOG&nbsp;*dlg);</B></PRE>
+
+<UL>
+<P>If you change any of the fields <B><TT>x</TT></B>, <B><TT>y</TT></B>,
+<B><TT>w</TT></B> or <B><TT>h</TT></B> of a <B><TT>DIALOG</TT></B>&nbsp;structure
+after you created a window for it, you should call this function to update
+the dialog window position and size.</P>
+</UL>
+
+<PRE><B>void centre_dialog(DIALOG&nbsp;*dlg);</B></PRE>
+
+<UL>
+<P>Changes the <B><TT>x</TT></B> and <B><TT>y</TT></B> fields of the <B><TT>*dlg</TT></B>
+so that is becomes centered in the screen.</P>
+</UL>
+
+<PRE><B>int find_dialog_focus(DIALOG&nbsp;*dlg);</B></PRE>
+
+<UL>
+<P>Returns the index of the control in the dialog array that have the flag
+<B><TT>D_GOTFOCUS</TT></B>&nbsp;set, of <B><TT>-1</TT></B> if none.</P>
+</UL>
+
+</BODY>
+</HTML>

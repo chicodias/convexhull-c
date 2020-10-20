@@ -1,0 +1,67 @@
+Hei emacs, este eh um arquivo -*- Text -*-
+
+------------------------------------------------------------------------
+Programa CG (Utilitario XDialogs). Por Ricardo R Massaro.
+------------------------------------------------------------------------
+LINUX.TXT: Instrucoes para compilar e instalar o programa no Linux e em 
+outros sistemas UNIX.
+------------------------------------------------------------------------
+
+
+COMPILACAO
+
+Para compilar o programa, voce deve ter o X11 (eu testei com o XFree86
+versao 3.x). Nenhuma biblioteca adicional (isto e, alem da libX11, que
+voce DEVE TER se tem o X11) e necessaria. Para compilar:
+
+ (1) Execute o script `conv' (ou digite `sh conv') para converter os 
+     arquivos fontes para o padrao aceito pelo Linux (ou Unix).
+
+ (2) Edite o Makefile, colocando os diretorios corretos, o compilador,
+     etc. do seu sistema. Em particular, certifique-se de que a variavel
+     `X11_DIR' contem o diretorio onde ficam as bibliotecas do X11 (por
+     exemplo, o arquivo libX11.so).
+
+ (3) Digite `make'.
+
+Este programa deve compilar sem nenhuma modificacao com compiladores
+ANSI C (ex.: gcc) em sistemas compativeis com o padrao POSIX (com
+algumas restricoes explicadas abaixo), por exemplo, SunOS. Note que e
+necessario que os fontes sejam compilados com "UNIX" definido (o que e
+feito automaticamente pelo "-DUNIX" presente no Makefile).
+
+
+INSTALACAO
+
+Para instalar o programa, basta copiar este arquivo para o diretorio
+onde voce coloca os programas instalaveis (normalmente,
+`/usr/local/bin'). Se voce quiser, use `make install' para fazer
+isto. Note que nao e necessario instalar o programa para usa-lo.
+
+Se voce nao modificou o Makefile, o programa foi compilado com
+informacoes de debug. Isto pode ser util se voce encontrou um bug e
+quer descobrir qual foi a causa, mas torna o executavel muito maior do
+que o realmente necessario. Para tirar as informacoes de debug, use o
+`strip' no executavel:
+
+  strip cg
+
+Isto vai remover as informacoes de debug, em alguns casos diminuindo
+drasticamente o tamanho do executavel (no meu caso, a diferenca e de
+aproximadamente 375KB para menos de 57KB).
+
+
+PROBLEMAS
+
+Algumas partes do programa (a biblioteca XDialogs, no diretorio
+`xdialogs/') fogem do POSIX em alguns detalhes. Se voce nao conseguir
+compilar, leia isto:
+
+  - Para ser possivel reconhecer duplos cliques do mouse, tive que
+    usar a funcao `gettimeofday()', do padrao BSD 4.3. Se a sua
+    biblioteca padrao C nao tem esta funcao, edite o Makefile no
+    diretorio xdialogs/ e "descomente" a linha que define
+    DOUBLE_CLICKS. Isto fara com que a biblioteca pare de enviar
+    codigos de duplo-clique.
+    Se voce encontrar outra solucao, por favor me avise
+    (massaro@ime.usp.br).

@@ -1,0 +1,50 @@
+------------------------------------------------------------------------------
+Programa CG. Por Cassio Polpo de Campos.
+------------------------------------------------------------------------------
+FORM_ARQ.TXT: Formato dos arquivos de entrada/saida.
+------------------------------------------------------------------------------
+
+       O arquivo utilizado pelo programa para salvar/ler informacoes eh o
+
+seguinte:
+
+
+Uma linha contendo: "number of points=$$$", onde $$$ eh o numero de pontos,
+
+seguida de $$$ linhas com "p ### ### ...", onde ### ### ... sao as coordenadas
+
+de um ponto.
+
+Na sequencia, deve aparecer uma linha com "number of polygons=$$$", onde $$$
+
+eh  o  numero  de  poligonos.  Entao  devem  aparecer $$$  linhas  contendo
+
+"polygon ###: number of points=%%%", intercaladas pelas linhas com os pontos
+
+como segue: "P ### ### ...", como descrito antes.
+
+       Exemplo:
+
+
+-----------------------------
+number of points=3
+p 1 1
+p 100 300
+p 12 45
+
+number of polygons=2
+polygon 1: number of points=4
+P 100 100
+P 100 200
+P 200 200
+P 200 100
+
+polygon 2: number of points=3
+P 1 2
+P 30 40
+P 2 100
+-----------------------------
+
+------------------------------------------------------------------------------
+FORM_ARQ.TXT - fim
+------------------------------------------------------------------------------

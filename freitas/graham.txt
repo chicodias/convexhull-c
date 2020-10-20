@@ -1,0 +1,41 @@
+------------------------------------------------------------------------------
+Programa CG. Por Cassio Polpo de Campos.
+------------------------------------------------------------------------------
+GRAHAM.TXT : calcula o fecho convexo em O(n*logn)
+------------------------------------------------------------------------------
+
+        O algoritmo de Graham calcula o fecho convexo de pontos num plano, 
+
+em O (n*logn). Ele encontra o ponto P com menor ordenada (Y) e entao ordena 
+
+os pontos pelo angulo (em relacao ao ponto P). Agora, com ajuda de uma pilha,
+
+empilhamos os dois primeiros pontos e entao basta percorrermos os pontos 
+
+ordenados fazendo o seguinte: 
+
+ - se o ponto X em questao esta a esquerda do vetor penultimo-ultimo 
+
+   da pilha (ultimo da pilha eh o topo) entao empilhamos e olhamos o proximo;
+
+ - se o ponto X em questao esta a direita deste mesmo vetor, entao
+   
+   desempilhamos e voltamos a analisar para X.
+
+        Ao final temos na pilha o casco convexo dos pontos.
+
+---------------------------------------------------------------------------
+-> Complexidade: este algoritmo tem complexidade n*logn, pois precisamos 
+
+                 disso para ordena-los. Ja o processamento apos os pontos
+
+                 estarem ordenados nao altera a complexidade. E' um
+
+                 algoritmo deterministico muito bom para calculo de fecho 
+                 
+                 convexo.
+
+
+------------------------------------------------------------------------------
+QHULL.TXT - Fim
+------------------------------------------------------------------------------

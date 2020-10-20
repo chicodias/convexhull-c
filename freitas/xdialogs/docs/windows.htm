@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE></TITLE>
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.0Gold (X11; I; Linux 2.0.0 i586) [Netscape]">
+</HEAD>
+<BODY>
+
+<H1>Windows</H1>
+
+<H3>Overview</H3>
+
+<UL>
+<LI><A HREF="#creating">Creating</A></LI>
+
+<LI><A HREF="#showing">Showing and hidding</A></LI>
+
+<LI><A HREF="#moving">Moving and resizing</A></LI>
+
+<LI><A HREF="#closing">Closing</A></LI>
+
+<LI><A HREF="#other">Other functions</A></LI>
+</UL>
+
+<P>Under XDialogs, you can create many kinds of windows. The simplest case
+is to make an empty window just to output graphics to it and receive mouse
+(or whatever is your pointer) and keyboard input. However, in many cases
+you will want to make windows with some controls (buttons, fields for text
+input, etc.). This is accomplished by creating dialog windows. In this
+section we will see only the basics of creating and manipulating windows.
+If you want to create windows with dialogs, you should read the <A HREF="dialogs.html">Dialogs</A>
+section.</P>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H3><A NAME="creating"></A>Creating a window</H3>
+
+<P>To create a window, just call</P>
+
+<PRE><B><TT>WINDOW *create_window(char *NAME, int X, int Y, int W, int
+H, WINDOW *parent, DIALOG *dialog);</TT></B></PRE>
+
+<P>This will create a window and return a pointer to an allocated <B><TT>WINDOW</TT></B>
+structure. The window will not be &quot;hidden&quot;; you will have to
+call <B><TT>win_showwindow()</TT></B> to show it (this is made for making
+it possible to adjust some window parameters before making it visible).
+The returned structure will be used whenever you want to reference the
+created window again (for example, for drawing on it). The parameters are:</P>
+
+<P><B><TT>NAME</TT></B></P>
+
+<UL>
+<P>A null-terminated string containing the window title.</P>
+</UL>
+
+<P><B><TT>X</TT></B>, <B><TT>Y</TT></B>, <B><TT>W</TT></B>, <B><TT>H</TT></B></P>
+
+<UL>
+<P>The position (<B><TT>X</TT></B>, <B><TT>Y</TT></B>), width (<B><TT>W</TT></B>)
+and height (<B><TT>H</TT></B>) of the window. Note that some window managers
+choose to ignore the position requested by the program and ask to the user
+place the window.</P>
+</UL>
+
+<P><B><TT>parent</TT></B></P>
+
+<UL>
+<P>The parent window, a pointer to a <B><TT>WINDOW</TT></B> structure returned
+by a previous call to <B><TT>create_window()</TT></B> that will be the
+parent window of the created window. It can be <B><TT>NULL</TT></B> if
+you don't want any parent. If you choose to have a parent, XDialogs will
+tell to the window manager to make the new window &quot;transient&quot;
+to the parent window, this means that it should be always in front of the
+parent. This can be ignored by the window manager, though.</P>
+</UL>
+
+<P><B><TT>dialog</TT></B></P>
+
+<UL>
+<P>A pointer to an array of <B><TT>DIALOG</TT></B> structures indicating
+the dialog that the window will contain. It can be <B><TT>NULL</TT></B>
+to create a &quot;clean&quot; window. If you pass a dialog, a sub-window
+will be created for each control of the dialog.</P>
+</UL>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H3><A NAME="showing"></A>Showing and Hidding</H3>
+
+<P>When you create a window, it will be initially hidden, so you can perform
+any adjustments before showing it. To make a window visible, use</P>
+
+<PRE><B>void win_showwindow(WINDOW *w);</B></PRE>
+
+<P>If you need to hide the window again, call</P>
+
+<PRE><B>void win_hidewindow(WINDOW *w);</B></PRE>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H3><A NAME="moving"></A>Moving and Resizing</H3>
+
+<P>To move a window to a specific position in the screen, call</P>
+
+<PRE><B>void win_movewindow(WINDOW *w, int pos_x, int pos_y);</B></PRE>
+
+<P>To change the size of a window, call</P>
+
+<PRE><B>void win_resizewindow(WINDOW *w, int width, int height);</B></PRE>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H3><A NAME="closing"></A>Closing</H3>
+
+<P>When you are finished with a window, call</P>
+
+<PRE><B>void close_window(WINDOW *w);</B></PRE>
+
+<P>This will close the window <B><TT>w</TT></B> and all of the window controls
+of its dialog (if any). The structure pointed to by <B><TT>w</TT></B> will
+be freed, and should never be referenced again.</P>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H3><A NAME="other"></A>Other functions</H3>
+
+<P>Sometimes, a window needs temporarily to receive exclusive mouse input:
+for example, when you are dragging a scroll bar, it would be inconvenient
+to stop the dragging of the user moves the pointer outside the window.
+To make a window receive exclusive mouse input, call</P>
+
+<PRE><B>int win_grab_pointer(WINDOW *win, int confine);</B></PRE>
+
+<P>After a successful call to this function, the specified window will
+be the only window to receive the mouse input, no matter what is done with
+the pointer. If the confine parameter is non-zero, the pointer will be
+restricted to the window. To release the mouse (return it to its normal
+state), you must call</P>
+
+<PRE><B>void win_ungrab_pointer(WINDOW *win);</B></PRE>
+
+<P>Use these functions with care: failing to ungrab the pointer will leave
+the entire system unusable, because no other window will receive the input
+focus. A common case of using this function is</P>
+
+<PRE><B>win_grab_pointer(win, 0);
+while (win_read_mouse(win, NULL, NULL)) {
+  /* Do anything: the mouse is positioned
+   * at (win-&gt;mouse_x, win-&gt;mouse_y)
+   */
+}
+win_ungrab_pointer(win);</B></PRE>
+
+</BODY>
+</HTML>

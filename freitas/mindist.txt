@@ -1,0 +1,59 @@
+------------------------------------------------------------------------------
+Programa CG. Por Cassio Polpo de Campos.
+------------------------------------------------------------------------------
+MINDIST.TXT : Algoritmo para calcular o par mais proximo O(n*logn)
+------------------------------------------------------------------------------
+
+	Este algoritmo calcula o par de pontos mais proximo em ordem de
+
+n*logn. E' um algoritmo do tipo divisao e conquista.
+
+	Quebramos o problema em duas metades, resolvendo recursivamente
+
+cada uma, e entao basta colarmos os resultados. A base da recursao eh
+
+quando o problema tem n<=3 pontos. Neste caso achamos facilmente a
+
+resposta. Entao, ja temos d1, d2 solucao para cada metade. computamos
+
+d = min (d1,d2). Para colarmos, precisamos olhar apenas para os pontos
+
+ que estao a uma distancia menor que d do 'corte'. Mas para cada ponto
+
+na regiao precisamos olhar para todos demais ? Isto estragaria a
+
+complexidade (ver item complexidade). Porem isso nao eh necessario.
+
+Basta mantermos os pontos dessa regiao ordenados (sem qualquer custo)
+
+e entao olharmos em ordem, para os proximos 7 pontos. Suponhamos que o
+
+ponto a ser analisado esta muito proximo da fronteira, em um dos dois
+
+lados. Suponha que ele esta do lado 1. Entao basta olharmos para 4
+
+pontos do outro lado e 3 do mesmo lado deste ponto! (Isto porque se a 
+
+distancia > d, entao distancia nao serve para nada).
+
+	      | lado1 | lado2 |
+	      |*     1|*     *| /\
+	      |       |       |  d
+	      |       |       |
+	      |*     *|*     *| \/
+	      <-- d -> <- d -->
+
+(Analisando o ponto 1, basta olharmos, no pior caso, para os asteriscos
+ que sao 7).
+
+
+-----------------------------------------------------------------------
+-> Complexidade: este eh um algoritmo do tipo
+
+			T(n) = 2*T(n/2) + O(n)
+
+	que como sabemos tem complexidade n*logn.
+
+------------------------------------------------------------------------------
+MINDIST.TXT - Fim
+------------------------------------------------------------------------------

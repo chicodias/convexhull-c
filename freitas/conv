@@ -1,0 +1,10 @@
+#!/bin/sh
+
+
+if [ -f MINUSC.C ]; then
+  mv MINUSC.C minusc.c
+fi
+
+make minusc
+
+minusc *.C *.H *.TXT
