@@ -1,6 +1,6 @@
 /* 
  * File:   lista.h
- * Author: Francisco Rosa Dias de Miranda
+ * Author: Francisco Rosa Dias de Miranda e Hiago Vinicius Americo
   (baseado no arquivo lista.h de Eliane Gniech Karasawa)
  */
 
@@ -20,6 +20,13 @@ struct pon {
     double y;
     NO * prox;
 };
+
+// cabeça da lista
+struct lista
+    {
+    NO *inicio; 
+    int n;
+    };
 
 typedef struct lista LISTA;
 

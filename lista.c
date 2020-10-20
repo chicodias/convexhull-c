@@ -1,17 +1,11 @@
 /* 
  * File:   lista.c
- * Author: Francisco Rosa Dias de Miranda
+ * Author: Francisco Rosa Dias de Miranda e Hiago Vinicius Americo
  */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include "lista.h"
-
-// cabeça da lista
-struct lista{
-    NO *inicio; 
-    };
-
 /*
 Criação da lista com alocação dinâmica e inicialização do ponteiro inicio
 Retorna o ponteiro da sacola
@@ -26,6 +20,7 @@ LISTA *lista_criar(void){
     if (lis == NULL)
         return ERRO;
 
+    lis->n = 0;
     lis->inicio = NULL;
     return lis;
 }
@@ -74,21 +69,29 @@ boolean lista_vazia(LISTA *l){
     return FALSE;
 }
 
-// insere um elemento na lista na primeira posição
+// insere um elemento na lista ordenadamente de acordo com a coordenada y.
 boolean lista_inserir(LISTA *l, double x, double y){
-    NO *p, *novo;
+    NO *p, *q, *novo;
     if (l == NULL)
         return FALSE;
 
-
     novo = (NO *)malloc(sizeof(NO));
     if (novo == NULL)
-	return ERRO;
-
+	    return ERRO;
     novo->x = x;
     novo->y = y;
-    novo->inicio = l->inicio;
-    l->inicio = novo;    
+
+    // encontra a primeira posição em que y < l->y
+    p = l->inicio;
+    while (y > p->y && p->prox != NULL)
+    {
+        q = p;
+        p = p->prox; 
+    }
+
+    novo->prox = p;
+    q->prox = novo;
+    (l->n)++;    
 
     return TRUE;
    

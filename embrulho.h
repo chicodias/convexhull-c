@@ -1,21 +1,16 @@
-#include "lista.h"
 // file: embrulho.h
-// authors:  Francisco Rosa Dias de Miranda e Hiago
+// authors:  Francisco Rosa Dias de Miranda e Hiago Vinicius Americo
 #ifndef EMBRULHO_H
-#define EMBRUHLO_H
+#define EMBRULHO_H
 
-/* Algoritmo do embrulho.
-Inicialmente, determine o ponto P do conjunto com menor coordenada y.
-Em seguida encontre o ponto Q, dentre os que outros pontos, com menor ângulo
-em relação a P e a linha horizontal. Esse é um ponto que certamente é vértice 
-do fecho convexo, e mais, a aresta PQ pertence ao fecho convexo. A partir daí,
-basta encontrar o próximo ponto com menor ângulo em relação a aresta PQ, e assim
-por diante. A execução termina quando o ponto P inicial é encontrado novamente.
-*/
+#include "lista.h"
 
 /* retorna uma lista circular com o poligono convexo a partir dos pontos em L
 */
-LISTA * embrulho(char pos, int inic,LISTA * L);
+LISTA * embrulho(char pos, int inic, LISTA * L);
+
+/* Encontra o ponto com a menor coordenada y  e retorna-o */
+NO * findlowest(LISTA * L);
 
 /* calcula um angulo entre um segmento PQ e um ponto r.
 retorna o angulo */

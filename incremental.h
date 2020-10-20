@@ -1,8 +1,9 @@
-#include "lista.h"
 // file: incremental.h
-// authors:  Francisco Rosa Dias de Miranda e Hiago
+// authors:  Francisco Rosa Dias de Miranda e Hiago Vinicius Americo
 #ifndef INCREMENTAL_H
 #define INCREMENTAL_H
+
+#include "lista.h"
 
 // definição do tipo de lista utilizada
 

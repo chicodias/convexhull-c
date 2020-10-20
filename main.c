@@ -1,10 +1,11 @@
 /* arquivo: main.c
-  * autores: Francisco Miranda e Hiago
+  * autores: Francisco Miranda e Hiago Vinicius Americo
 */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include "lista.h"
+#include "embrulho.h"
 
 /* 
   @main: lê os pontos em cordenadas x,y da entrada padrão, armazena 
@@ -35,34 +36,17 @@ int main()
 // inserção dos pontos na lista
     for(int i = 0, i < pnt, ++i)
     {
-        scanf("%f %f", &posx, &posy)
+        scanf("%f %f", &posx, &posy);
         lista_inserir(l,posx,posy);
     }
 
 // ponto que a impressao é iniciada
     scanf("%c", &inic);
-    switch (inic)
-    {
-    // chamada das funções de acordo com a impressao
-    case "L":
-        /* code */
-        break;
+    scanf("%d", &sentido);
     
-    case "R":
-        /* code */
-        break;
-    
-    case "D":
-        /* code */
-        break;
-    
-    case "U":
-        /* code */
-        break;
-    
-    default:
-        break;
-    }
+// chamada da função
+    LISTA * m = 
+
 
 // desalocação da lista para encerrar a aplicação
     lista_apagar(&l);
