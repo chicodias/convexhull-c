@@ -1,3 +1,4 @@
+#include<stdlib.h>
 #include "lista.h"
 #include "embrulho.h"
 // pra usar esse bereguenaits tem que compilar com a tag -lm
@@ -13,25 +14,89 @@ basta encontrar o próximo ponto com menor ângulo em relação a aresta PQ, e a
 por diante. A execução termina quando o ponto P inicial é encontrado novamente.
 */
 
+
+// retorna uma lista circular com o poligono convexo a partir dos pontos em L
+LISTA * embrulho(char pos, int inic, LISTA * L)
+{
+    // nos que usaremos nas iteracoes
+    NO * p, * q, *r;
+    // lista retornada
+    LISTA * M;
+    // vetor com os angulos entre um ponto e os n-1 outros
+    double * angs;
+
+    // inicializacao da lista com elementos do poligono
+    M = lista_criar();
+
+    // primeiro elemento da lista: 
+    p = findlowest(L);
+    lista_inserir(M, p->x, p->y);
+
+    // inicializacao do algoritmo
+    // alocacao no primeiro no
+    q = (NO *) malloc(sizeof(NO));
+    q->x = 0;
+    q->y = 0;
+
+    // alocacao do vetor com os angulos
+    angs = (double *) malloc(((L->n)-1) * sizeof(double));
+
+    int i = 0;
+    r = p->prox;
+    
+    // calcula o angulo com todos os outros caras do vetor
+    while (i < (L->n)-1)
+    {
+        angs[i] = angulo(q, p, r);
+        r = r->prox;
+        ++i;
+    }
+            
+    
+    // tbd: funcao calcular o minimo do vetor que retorna a posiçao i do elemento no vetor
+    // percorrer a lista, e colocar L[i] como proximo nó da lista M
+
+    // como a complexidade do algoritmo no pior caso é quadrática, temos que agora em diante 
+    // repetir o processo acima até que cheguemos no NÓ p novamente, para então retornar M.
+
+     
+    // limpando a casa
+    free(q);
+    free(angs);
+
+    return M; 
+}
+
+
+/* Como temos uma lista ordenada pelos valores de y,
+   basta pegar o primeiro elemento da lista.
+*/
 NO * findlowest(LISTA * L)
 {
     return L->inicio;
 }
 
+// calcula o angulo entre o vetor PQ e o vetor PR
+// confirmar se eh isso msm
 double angulo(NO * p, NO * q, NO * r)
 {
     double ang;
-    NO * PQ, * PR;
 
-    PQ->x = q->x - p->x;
-    PQ->y = q->y - p->y;
+    // cada componente do vetor (x,y) em uma posicao
+    double PQ[2], PR[2];
 
-    PR->x = r->x - p->x;
-    PR->y = r->y - p->y;
+    PQ[1] = q->x - p->x;
+    PQ[2] = q->y - p->y;
 
-    // cosseno do trem
-    ang = (PQ->x*PR->x + PQ->y*PR->y) /
-          sqrt(PQ->x * PQ->x + PQ->y * PQ->y) * sqrt(PR->x * PR->x + PR->y * PR->y);
+    PR[1] = r->x - p->x;
+    PR[2] = r->y - p->y;
 
-    return acos(ang); //produto escalar daquele treco
+    // cos do angulo entre PQ e PR a partir da def
+    // de produto escalar entre dois vetores
+
+    ang = (PQ[1]*PR[1] + PQ[2]*PR[2]) /
+          sqrt(PQ[1] * PQ[1] + PQ[2] * PQ[2]) * sqrt(PR[1] * PR[1] + PR[2] * PR[2]);
+    
+
+    return acos(ang); //retorna o angulo em radianos
 }

@@ -14,8 +14,7 @@ NO * findlowest(LISTA * L);
 
 /* calcula um angulo entre um segmento PQ e um ponto r.
 retorna o angulo */
-double angulo(NO p, NO q, NO r);
-
+double angulo(NO * p, NO * q, NO * r);
 
 
 #endif
