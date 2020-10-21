@@ -71,53 +71,9 @@ boolean lista_vazia(LISTA *l){
     
     return FALSE;
 }
-/* 
+
+
 // insere um elemento na lista ordenadamente de acordo com a coordenada y.
-boolean lista_inserir(LISTA *l, double x, double y){
-    NO *p, *q, *novo;
-    if (l == NULL)
-        return FALSE;
-
-    novo = (NO *)malloc(sizeof(NO));
-    if (novo == NULL)
-	    return ERRO;
-
-    novo->x = x;
-    novo->y = y;
-    novo->prox = NULL;
-
-    // encontra a primeira posição em que y > l->y
-    p = l->inicio;
-    while (y > p->y && p != NULL)
-    {
-        q = p;
-        p = p->prox; 
-    }
-
-    // insere elemento no início
-    if (q == NULL)
-    {
-        novo->prox = NULL;      
-        l->inicio = novo;   
-    }
-
-    // insere no meio da lista
-    else
-    {
-        novo->prox = q->prox;
-        q->prox = novo;   
-    }
-    
-    novo->prox = p;
-    q->prox = novo;
-    
-    (l->n)++;    
-
-    return TRUE;
-   
-} */
-
-
 void lista_inserir (LISTA* l, double x, double y)
 {
     /* cria novo nó */
@@ -138,7 +94,7 @@ void lista_inserir (LISTA* l, double x, double y)
     while (p != NULL && p->y < y) 
     {      
         ant = p;      
-        p = p->prox;   
+        p = p->prox;
     }   
     
     /* insere elemento */   

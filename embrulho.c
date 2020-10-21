@@ -1,8 +1,11 @@
-#include<stdlib.h>
-#include "lista.h"
+/* 
+ * File:   embrulho.c
+ * Author: Francisco Rosa Dias de Miranda e Hiago Vinicius Americo
+*/
+
 #include "embrulho.h"
-// pra usar esse bereguenaits tem que compilar com a tag -lm
-#include "fmath.h"
+// pra usar essa lib tem que compilar com a tag -lm
+#include <math.h>
 
 
 /* Algoritmo do embrulho.
@@ -13,7 +16,6 @@ do fecho convexo, e mais, a aresta PQ pertence ao fecho convexo. A partir daí,
 basta encontrar o próximo ponto com menor ângulo em relação a aresta PQ, e assim
 por diante. A execução termina quando o ponto P inicial é encontrado novamente.
 */
-
 
 // retorna uma lista circular com o poligono convexo a partir dos pontos em L
 LISTA * embrulho(char pos, int inic, LISTA * L)
@@ -99,4 +101,11 @@ double angulo(NO * p, NO * q, NO * r)
     
 
     return acos(ang); //retorna o angulo em radianos
+}
+
+// encontra o minimo em um vetor e retorna sua posicao
+int min(double * vet, int n)
+{
+
+    return pos + 1;
 }
