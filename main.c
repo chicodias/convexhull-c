@@ -34,9 +34,9 @@ int main()
     scanf("%d", &pnt);
     
 // inserção dos pontos na lista
-    for(int i = 0, i < pnt, ++i)
+    for(int i = 0; i < pnt; ++i)
     {
-        scanf("%f %f", &posx, &posy);
+        scanf("%lf %lf", &posx, &posy);
         lista_inserir(l,posx,posy);
     }
 
@@ -45,7 +45,7 @@ int main()
     scanf("%d", &sentido);
     
 // chamada da função
-    LISTA * m = 
+    lista_imprimir(l);
 
 
 // desalocação da lista para encerrar a aplicação

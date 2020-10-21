@@ -2,7 +2,7 @@
 #include "lista.h"
 #include "embrulho.h"
 // pra usar esse bereguenaits tem que compilar com a tag -lm
-#include <math.h>
+#include "fmath.h"
 
 
 /* Algoritmo do embrulho.
