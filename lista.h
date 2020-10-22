@@ -30,6 +30,7 @@ struct lista
 
 typedef struct lista LISTA;
 
+NO * criaNo(double x, double y);
 LISTA *lista_criar(void); /*Criacao da lista e retorno do seu ponteiro*/
 boolean lista_apagar(LISTA **l); /*Apaga todo o conteudo da lista e libera o bloco de memoria*/
 void lista_imprimir(LISTA *l); /*Imprime os elementos armazenados na lista*/

@@ -9,11 +9,15 @@
 
 #include "lista.h"
 
-double area2(NO * p, NO * q, NO * r);
+int prodEscalar (NO * p, NO * q);
 
-boolean esquerda(NO * p, NO * q, NO * r);
+int norma2 (NO * p);
 
-boolean direita(NO * p, NO * q, NO * r);
+double area2 (NO * p, NO * q, NO * r);
+
+boolean esquerda (NO * p, NO * q, NO * r);
+
+boolean direita (NO * p, NO * q, NO * r);
 
 
 #endif

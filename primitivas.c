@@ -9,25 +9,33 @@
 */
 
 
+// retorna o produto escalar entre os vetores OP e OQ
+int prodEscalar (NO * p, NO * q)
+{
+  return (p->x * q->x + p->y * q->y);
+}
+
+// usa a funcao acima para calcular a norma ao quadrado do vetor p
+int norma2 (NO * p)
+{
+  return (prodEscalar (p, p));
+}
+
+// recebe três pontos e retorna o quadrado da área do triangulo
+// PQR pela lei do determinante.
+
 double area2(NO * p, NO * q, NO * r)
 {
     // cada componente do vetor (x,y) em uma posicao
-    // x na pos 0 e y na pos 1.
-    double a[2], b[2], c[2];
-
-    a[0] = p->x;
-    a[1] = p->y;
-
-    b[0] = q->x; 
-    b[1] = q->y;
-
-    c[0] = r->x;
-    c[1] = r->y;
+    double a[2] = {p->x, p->y},
+           b[2] = {q->x, q->y},
+           c[2] = {r->x, r->y};
 
     return((a[0] * b[1] - a[1] * b[0] +
             a[1] * c[0] - a[0] * c[1] +
             b[0] * c[1] - c[0] * b[1]));
 }
+
 
 boolean esquerda(NO * p, NO * q, NO * r)
 {

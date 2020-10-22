@@ -4,6 +4,7 @@
 */
 
 #include "embrulho.h"
+#include "primitivas.h"
 // pra usar essa lib tem que compilar com a tag -lm
 #include <math.h>
 
@@ -36,10 +37,8 @@ LISTA * embrulho(char pos, int inic, LISTA * L)
 
     // inicializacao do algoritmo
     // alocacao no primeiro no
-    q = (NO *) malloc(sizeof(NO));
-    q->x = 0;
-    q->y = 0;
-
+    q = criaNo(0,0);
+    
     // alocacao do vetor com os angulos
     angs = (double *) malloc(((L->n)-1) * sizeof(double));
 
@@ -53,10 +52,24 @@ LISTA * embrulho(char pos, int inic, LISTA * L)
         r = r->prox;
         ++i;
     }
-            
+
+    // encontrando o ponto com menor angulo
+    int pos = minAng(angs, (L->n)-1);
+    NO * f = r;
+
+    // inserindo o menor angulo na lista M
+    for (int j = 0; j < pos; j++)
+        f = f->prox;
+    lista_inserir(M, f->x, f->y);
+
+
+    // agora fazemos isso iterativamente até que o proximo vertice
+    // do fecho convexo seja novamente o ponto p.
+    while (f != p)
+    {
+        /* code */
+    }
     
-    // tbd: funcao calcular o minimo do vetor que retorna a posiçao i do elemento no vetor
-    // percorrer a lista, e colocar L[i] como proximo nó da lista M
 
     // como a complexidade do algoritmo no pior caso é quadrática, temos que agora em diante 
     // repetir o processo acima até que cheguemos no NÓ p novamente, para então retornar M.
@@ -79,35 +92,39 @@ NO * findlowest(LISTA * L)
 }
 
 // calcula o angulo entre o vetor PQ e o vetor PR
-// confirmar se eh isso msm
 double angulo(NO * p, NO * q, NO * r)
 {
+    // angulo que retornaremos
     double ang;
-
-    // cada componente do vetor (x,y) em uma posicao
-    // x na pos 0 e y na pos 1.
-    double PQ[2], PR[2];
-
-    PQ[0] = q->x - p->x;
-    PQ[1] = q->y - p->y;
-
-    PR[0] = r->x - p->x;
-    PR[1] = r->y - p->y;
+    
+    // vetores PQ e PR
+    NO * PQ = criaNo(q->x - p->x, q->y - p->y);
+    NO * PR = criaNo(r->x - p->x, r->y - p->y);
 
     // cos do angulo entre PQ e PR a partir da def
     // de produto escalar entre dois vetores
+    ang = prodEscalar(PQ, PR) / sqrt(norma2(PQ)) * sqrt(norma2(PR));
 
-    ang = (PQ[0]*PR[0] + PQ[1]*PR[1]) /
-          sqrt(PQ[0] * PQ[0] + PQ[1] * PQ[1]) * sqrt(PR[0] * PR[0] + PR[1] * PR[1]);
-    
+    free(PQ);
+    free(PR);
 
-    return acos(ang); //retorna o angulo em radianos
+    return acos(ang); // retorna o angulo em radianos
 }
 
 // encontra o minimo em um vetor e retorna sua posicao
-int min(double * vet, int n)
+int minAng(double * vet, int n)
 {
     int pos = 0;
+    double min = vet[0];
 
-    return pos + 1;
+    for (int i = 1; i < n; i++)
+    {
+        if(vet[i] < min)
+        {
+            min = vet[i];
+            pos = i;
+        }
+    }
+    
+    return pos;
 }

@@ -17,7 +17,7 @@ retorna o angulo */
 double angulo(NO * p, NO * q, NO * r);
 
 // procura o angulo minimo em um vetor e retorna sua posicao
-int min(double * vet, int n);
+int minAng(double * vet, int n);
 
 
 #endif

@@ -7,6 +7,17 @@
 #include <stdlib.h>
 #include "lista.h"
 
+// aloca um no dinamicamente com as cordenadas e NO->prox = NULL
+NO * criaNo(double x, double y)
+{
+    NO * p = (NO *) malloc(sizeof(NO));
+
+    p->x = x;
+    p->y = y;
+    p->prox = NULL;
+
+    return p;
+}
 
 /*
 Criação da lista com alocação dinâmica e inicialização do ponteiro inicio
