@@ -85,19 +85,20 @@ double angulo(NO * p, NO * q, NO * r)
     double ang;
 
     // cada componente do vetor (x,y) em uma posicao
+    // x na pos 0 e y na pos 1.
     double PQ[2], PR[2];
 
-    PQ[1] = q->x - p->x;
-    PQ[2] = q->y - p->y;
+    PQ[0] = q->x - p->x;
+    PQ[1] = q->y - p->y;
 
-    PR[1] = r->x - p->x;
-    PR[2] = r->y - p->y;
+    PR[0] = r->x - p->x;
+    PR[1] = r->y - p->y;
 
     // cos do angulo entre PQ e PR a partir da def
     // de produto escalar entre dois vetores
 
-    ang = (PQ[1]*PR[1] + PQ[2]*PR[2]) /
-          sqrt(PQ[1] * PQ[1] + PQ[2] * PQ[2]) * sqrt(PR[1] * PR[1] + PR[2] * PR[2]);
+    ang = (PQ[0]*PR[0] + PQ[1]*PR[1]) /
+          sqrt(PQ[0] * PQ[0] + PQ[1] * PQ[1]) * sqrt(PR[0] * PR[0] + PR[1] * PR[1]);
     
 
     return acos(ang); //retorna o angulo em radianos
@@ -106,6 +107,7 @@ double angulo(NO * p, NO * q, NO * r)
 // encontra o minimo em um vetor e retorna sua posicao
 int min(double * vet, int n)
 {
+    int pos = 0;
 
     return pos + 1;
 }
