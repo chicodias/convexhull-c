@@ -1,4 +1,5 @@
 #include "incremental.h"
+#include "primitivas.h"
 
 LISTA incremental(char pos, int inic, LISTA * l){
 
@@ -16,10 +17,37 @@ um vértice. */
 
 // anti-horario
 
-NO * p;
+void anthorario(LISTA *l, NO *p, NO *q, NO *r, int sentido){
 
+	// criando o convexo atual
+	NO * PQ = criaNo(q->x - p->x, q->y - p->y);
+    NO * PR = criaNo(r->x - p->x, r->y - p->y);
+    NO * QR = criaNo(r->x - q->x, r->y - q->y);
 
+	if(sentido == 1){
+
+		/* Percorrer a lista, verificar se tem um x menor do que o atual de acordo com as retas, caso tenha "conserte" o convexo */
+
+		/* code */
+	}
 
 }
+
+void horario(LISTA *l, NO *p, NO *q, NO *r, int sentido){
+
+	// criando o convexo atual
+	NO * PQ = criaNo(q->x - p->x, q->y - p->y);
+    NO * PR = criaNo(r->x - p->x, r->y - p->y);
+    NO * QR = criaNo(r->x - q->x, r->y - q->y);
+
+    if(sentido == 0){
+
+    	/* Percorrer a lista, verificar se tem um x menor do que o atual de acordo com as retas, caso tenha "conserte" o convexo */
+
+    	/* code */
+    }
+}
+
+
 
 
