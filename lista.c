@@ -123,3 +123,78 @@ void lista_inserir (LISTA* l, double x, double y)
 
     (l->n)++;
     }
+
+// insere um elemento na lista ordenadamente de acordo com a coordenada x.
+void lista_inserir_x (LISTA* l, double x, double y)
+{
+    /* cria novo nó */
+    NO* novo = (NO *)malloc(sizeof(NO));
+
+    novo->x = x;
+    novo->y = y;
+    novo->prox = NULL;
+
+    /* ponteiro para elemento anterior */   
+    NO* ant = NULL;     
+    
+    /* ponteiro para percorrer a lista*/   
+    NO* p = l->inicio;          
+    
+    
+    /* procura posição de inserção */   
+    while (p != NULL && p->x < x) 
+    {      
+        ant = p;      
+        p = p->prox;
+    }   
+    
+    /* insere elemento */   
+    if (ant == NULL) 
+    {   /* insere elemento no início */      
+        novo->prox = l->inicio;      
+        l->inicio = novo;   
+    }
+    
+    else 
+    {   /* insere elemento no meio da lista */      
+        novo->prox = ant->prox;      
+        ant->prox = novo;   
+    }
+
+    (l->n)++;
+    }
+
+
+// remove um elemento da lista e retorna TRUE se conseguir.
+// se não encontrar, retorna FALSE
+// se a lista estiver vazia, retorna ERRO
+boolean lista_remover(LISTA *l, NO * chave)
+{
+    NO *p, *q;
+    
+    if (l == NULL || l->inicio == NULL)
+        return ERRO;
+    
+
+    p = l->inicio;
+
+    // remove da primeira posição
+    if(l->inicio == chave){
+        l->inicio=l->inicio->prox;
+        free(p);
+        return TRUE;
+    }
+
+    while (p != chave){
+        
+        q = p;
+        p = p->prox;
+    
+        if (p == NULL)
+            return FALSE;
+    }
+
+    q->prox = p->prox;
+    free(p);
+    return TRUE;
+}

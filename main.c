@@ -47,8 +47,14 @@ int main()
 // chamada da função
     lista_imprimir(l);
 
+    LISTA * m = embrulho(inic,sentido,l);
+
+    lista_imprimir(m);
+    
+    //printf("%lf", angulo(l->inicio,l->inicio->prox, l->inicio->prox->prox));
 
 // desalocação da lista para encerrar a aplicação
     lista_apagar(&l);
+    lista_apagar(&m);
     return 0;
 }

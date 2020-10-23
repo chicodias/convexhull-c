@@ -1,5 +1,5 @@
 /* 
- * File:   lista.h
+ * File:   primitivas.h
  * Author: Francisco Rosa Dias de Miranda e Hiago Vinicius Americo
   (baseado no arquivo lista.h de Eliane Gniech Karasawa)
  */
@@ -9,9 +9,9 @@
 
 #include "lista.h"
 
-int prodEscalar (NO * p, NO * q);
+double prodEscalar (NO * p, NO * q);
 
-int norma2 (NO * p);
+double norma2 (NO * p);
 
 double area2 (NO * p, NO * q, NO * r);
 
