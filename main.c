@@ -45,10 +45,11 @@ int main()
     scanf("%d", &sentido);
     
 // chamada da função
-    lista_imprimir(l);
+    //lista_imprimir(l);
 
     LISTA * m = embrulho(inic,sentido,l);
 
+    printf("\n main: \n");
     lista_imprimir(m);
     
     //printf("%lf", angulo(l->inicio,l->inicio->prox, l->inicio->prox->prox));

@@ -168,33 +168,58 @@ void lista_inserir_x (LISTA* l, double x, double y)
 // remove um elemento da lista e retorna TRUE se conseguir.
 // se não encontrar, retorna FALSE
 // se a lista estiver vazia, retorna ERRO
-boolean lista_remover(LISTA *l, NO * chave)
+void lista_remover(LISTA *l, NO * chave)
 {
+    double chavex = chave->x, chavey = chave->y;
     NO *p, *q;
     
     if (l == NULL || l->inicio == NULL)
-        return ERRO;
+        return;
     
 
     p = l->inicio;
 
     // remove da primeira posição
-    if(l->inicio == chave){
+    if(p->x == chavex && p->y == chavey ){
         l->inicio=l->inicio->prox;
         free(p);
-        return TRUE;
+        return;
     }
 
-    while (p != chave){
+    while (p->x != chavex && p->y != chavey){
         
         q = p;
         p = p->prox;
+        l->n--;
     
         if (p == NULL)
-            return FALSE;
+            return;
     }
 
     q->prox = p->prox;
     free(p);
-    return TRUE;
+}
+
+void lista_inserir_fim (LISTA* l, double x, double y)
+{
+    /* cria novo nó */
+    NO* novo = (NO *)malloc(sizeof(NO));
+
+    novo->x = x;
+    novo->y = y;
+    novo->prox = NULL;
+
+    /* ponteiro para elemento anterior */   
+    NO* ant = NULL;     
+    
+    /* ponteiro para percorrer a lista*/   
+    NO* p = l->inicio;          
+
+    while (p != NULL) 
+    {      
+        ant = p;      
+        p = p->prox;
+    } 
+    ant->prox = novo;
+
 }

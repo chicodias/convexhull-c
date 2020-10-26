@@ -41,6 +41,10 @@ ANGULOS * criarAng(int n);
 // insere um elemento na lista ordenadamente de acordo com a coordenada y.
 void ins_ang (ANGULOS * l, double y, NO * x);
 
+void ins_ang_dec (ANGULOS * l, double y, NO * x);
+
 void angs_imprimir(ANGULOS *l);
+
+void angs_apagar(ANGULOS **l);
 
 #endif

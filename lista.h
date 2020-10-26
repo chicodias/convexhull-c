@@ -38,6 +38,7 @@ boolean lista_cheia(LISTA *l); /*Retorna TRUE se nao for possivel alocar mais no
 boolean lista_vazia(LISTA *l); /*Retorna TRUE se a lista estiver vazia*/
 void lista_inserir(LISTA *l, double x, double y); /*Insere o PONTO ordenadamente por y*/
 void lista_inserir_x (LISTA* l, double x, double y); // insere ordenademente por x
-boolean lista_remover(LISTA *l, NO * chave); //remove um ponto da lista
+void lista_inserir_fim(LISTA *l, double x, double y); /*Insere o PONTO no fim da lista*/
+void lista_remover(LISTA *l, NO * chave); //remove um ponto da lista
 
 #endif /* LISTA_H */

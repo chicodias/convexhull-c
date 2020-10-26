@@ -25,74 +25,88 @@ LISTA * embrulho(char pos, int inic, LISTA * L)
 {
     // nos que usaremos nas iteracoes
     NO * p, * q, * r, * s;
-    // lista retornada
-    LISTA * M;
-    // vetor com os angulos entre um ponto e os n-2 outros
-    double * angs;
+    // lista retornada (M = Conv(L))
+    LISTA * M; 
+    // lista com os angulos
+    ANGULOS * angul;
     // posicao na lista do vertice com menor angulo
     int posic;
-
+    
+    int i;
+    
     // inicializacao da lista com elementos do poligono
     M = lista_criar();
 
     
     // primeiro elemento da lista: 
-    p = findlowest(L);
-    lista_inserir(M, p->x, p->y);
+    lista_inserir(M, L->inicio->x, L->inicio->y);
 
+    // nao precisa remover os caras, so percorrer a lista.
+    //lista_remover(L,L->inicio);
     // inicializacao do algoritmo
-
+    p = M->inicio;
     // alocacao no primeiro no
     q = criaNo(0, p->y);
     
-    // alocacao da lista com os angulos
-    ANGULOS * angul = criarAng(L->n-1);
-        
-    int i = 0;
-    r = p->prox;
+    angul = criarAng(L->n - 2);
     
-    // calcula o angulo com todos os outros caras do vetor
-    while (i < (L->n)-2)
+    r = L->inicio->prox;
+    
+    // calcula o angulo com todos os outros caras do conjunto e a linha horizontal
+    for (i = 0; i < (L->n) - 2 && r != NULL; ++i)
     {
         q -> x = r -> x;
         ins_ang(angul, angulo(p, q, r), r);
         r = r->prox;
-        ++i;
-        
     }
-
-
-    // encontrando o ponto com menor angulo
-    //posic = minAng(angs, (L->n)-2);
-    //s = r;
-printf("\n esta na posicao: %d \n", posic );  
+    angs_imprimir(angul);
     // inserindo o menor angulo na lista M
-    //for (int j = 0; j < posic; j++)
-    //{
-    //   s = s->prox;
-    //   printf("\n end = %p\n",&s);
-    //}
-    //printf("\n saiu do for \n");
-    //printf("\n x = %lf y = %lf\n", s->x, s->y);
-    //lista_inserir(M, s->x, s->y);
-    //printf("inseriu 22\n");
+    //lista_inserir(M, angul->inicio->ponto->x, angul->inicio->ponto->y);
     
+    // libera o vertice criado
+    free(q);
 
     // agora fazemos isso iterativamente até que o proximo vertice
     // do fecho convexo seja novamente o ponto p.
-    //while (f != p)
-    //{
-        /* code */
-    //}
+    q = angul->inicio->ponto;  
     
+    while(q->x != L->inicio->x || q->y != L->inicio->y)
+    {
+        printf("chegou aqui? \n");
+        lista_inserir_fim(M, q->x, q->y);
+        lista_imprimir(M);
 
-    // como a complexidade do algoritmo no pior caso é quadrática, temos que agora em diante 
-    // repetir o processo acima até que cheguemos no NÓ p novamente, para então retornar M.
 
-    angs_imprimir(angul);
-    // limpando a casa
-    free(q);
-    free(angs);
+        r = q->prox;
+        if (r == NULL)
+            r = L->inicio;
+
+        angs_apagar(&angul);
+        angul = criarAng(L->n - 2);
+    
+    // calcula o angulo com todos os outros caras do conjunto
+        for (i = 0; i < (L->n) - 2; ++i)
+        {
+            ins_ang_dec(angul, angulo(p, q, r), r);
+            r = r->prox;
+
+            if (r == NULL)
+                r = L->inicio;    
+        }
+
+        printf("\n p=  %lf, %lf, q =  %lf, %lf \n", p->x, p->y,q->x, q->y);
+
+        p = q;
+        q = angul->inicio->ponto;
+        
+        
+        
+        angs_imprimir(angul);
+                   
+    }
+    
+    p->prox = q; 
+       
 
     return M; 
 }
@@ -170,6 +184,47 @@ void ins_ang (ANGULOS * l, double y, NO * x)
 
     }
 
+
+// insere um elemento na lista ordenadamente de acordo com o angulo
+void ins_ang_dec (ANGULOS * l, double y, NO * x)
+{
+    /* cria novo nó */
+    ANGS* novo = (ANGS *)malloc(sizeof(ANGS));
+
+    novo->ang = y;
+    novo->ponto = x;
+    novo->prox = NULL;
+
+    /* ponteiro para elemento anterior */   
+    ANGS* ant = NULL;     
+    
+    /* ponteiro para percorrer a lista*/   
+    ANGS* p = l->inicio;          
+    
+    
+    /* procura posição de inserção */   
+    while (p != NULL && p->ang > y) 
+    {      
+        ant = p;      
+        p = p->prox;
+    }   
+    
+    /* insere elemento */   
+    if (ant == NULL) 
+    {   /* insere elemento no início */      
+        novo->prox = l->inicio;      
+        l->inicio = novo;   
+    }
+    
+    else 
+    {   /* insere elemento no meio da lista */      
+        novo->prox = ant->prox;      
+        ant->prox = novo;   
+    }
+
+    }
+
+
 // imprime a lista na saída padrão
 void angs_imprimir(ANGULOS *l){
     if (l == NULL)
@@ -180,6 +235,28 @@ void angs_imprimir(ANGULOS *l){
     return;
 }
 
+
+
+// desacola a lista de angulos
+void angs_apagar(ANGULOS **l){
+    ANGS *p, *q;
+
+    // se a lista estiver vazia, retorne FALSE
+    if (*l == NULL)
+        return;
+
+    // inicialização do ponteiro que percorre a lista
+    p = (*l)->inicio;
+    while(p != NULL)
+    {
+        q = p->prox;
+        free(p);
+        p = q;
+    }
+    
+    free(*l);
+    
+}
 
 // essas duas funcs tao deprecated, mas vou deixar aqui
 
@@ -201,6 +278,7 @@ int minAng(double * vet, int n)
     
     return pos;
 }
+
 
 // encontra o maximo em um vetor e retorna sua posicao
 int maxAng(double * vet, int n)
