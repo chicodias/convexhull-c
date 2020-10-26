@@ -16,36 +16,76 @@ fecho, senão é um ponto externo que será colocado como
 um vértice. */
 
 // anti-horario
-
-void anthorario(LISTA *l, NO *p, NO *q, NO *r, int sentido){
-
-	// criando o convexo atual
-	NO * PQ = criaNo(q->x - p->x, q->y - p->y);
-    NO * PR = criaNo(r->x - p->x, r->y - p->y);
-    NO * QR = criaNo(r->x - q->x, r->y - q->y);
-
-	if(sentido == 1){
-
-		/* Percorrer a lista, verificar se tem um x menor do que o atual de acordo com as retas, caso tenha "conserte" o convexo */
-
-		/* code */
-	}
-
+   LISTA anthorario(LISTA *L){
+    
+        NO *p, NO *q, NO *r;
+        LISTA * M;
+        
+        
+        if(lista_tamanho(l) < 3)
+            M = anthorario(M->prox);
+        
+    
+        p = L->inicio;
+        q = p->prox;
+        r = q -> prox;
+        
+        // ponto interior ao fecho
+        if(esquerda(p,q,r)
+        {
+            p = p->prox;
+            q = q->prox;
+            p = r->prox;
+        }
+        
+        // novo vertice
+        else
+        {
+            
+            p = M->inicio;
+            q = p->prox;
+            while(p != NULL)
+            {
+                if (esquerda(p,q,r))
+                {
+                    p = p->prox;
+                    q = q->prox;
+            
+                }
+            
+                // ponto nao pertence mais ao fecho
+                else
+                {
+                
+                    p = q->prox;
+                    lista_remover(M,q);
+                    q = p->prox;
+                }
+            }    
+        }
+        
+        }
+        ultimo_emento(M)->prox = M->inicio;
+        return M;
+    }
 }
 
-void horario(LISTA *l, NO *p, NO *q, NO *r, int sentido){
+LISTA horario(LISTA *l){
 
-	// criando o convexo atual
-	NO * PQ = criaNo(q->x - p->x, q->y - p->y);
-    NO * PR = criaNo(r->x - p->x, r->y - p->y);
-    NO * QR = criaNo(r->x - q->x, r->y - q->y);
+	NO *p, NO *q, NO *r;
+    LISTA M;
 
-    if(sentido == 0){
+    if(lista_tamanho(l) < 3)
+    	M = anthorario(M->prox)
 
-    	/* Percorrer a lista, verificar se tem um x menor do que o atual de acordo com as retas, caso tenha "conserte" o convexo */
 
-    	/* code */
-    }
+
+
+
+
+
+    return M;
+   
 }
 
 
