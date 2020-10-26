@@ -24,7 +24,7 @@ por diante. A execução termina quando o ponto P inicial é encontrado novament
 LISTA * embrulho(char pos, int inic, LISTA * L)
 {
     // nos que usaremos nas iteracoes
-    NO * p, * q, * r, * s;
+    NO * p, * q, * r;
     // lista retornada (M = Conv(L))
     LISTA * M; 
     // lista com os angulos
@@ -59,7 +59,7 @@ LISTA * embrulho(char pos, int inic, LISTA * L)
         ins_ang(angul, angulo(p, q, r), r);
         r = r->prox;
     }
-    angs_imprimir(angul);
+    
     // inserindo o menor angulo na lista M
     //lista_inserir(M, angul->inicio->ponto->x, angul->inicio->ponto->y);
     
@@ -70,43 +70,42 @@ LISTA * embrulho(char pos, int inic, LISTA * L)
     // do fecho convexo seja novamente o ponto p.
     q = angul->inicio->ponto;  
     
-    while(q->x != L->inicio->x || q->y != L->inicio->y)
+    while(q != L->inicio)
     {
-        printf("chegou aqui? \n");
         lista_inserir_fim(M, q->x, q->y);
-        lista_imprimir(M);
-
-
-        r = q->prox;
-        if (r == NULL)
-            r = L->inicio;
+        //lista_imprimir(M);
 
         angs_apagar(&angul);
+        r = q->prox;
+
+        if (r == NULL)
+            break;
+        
         angul = criarAng(L->n - 2);
     
     // calcula o angulo com todos os outros caras do conjunto
         for (i = 0; i < (L->n) - 2; ++i)
         {
-            ins_ang_dec(angul, angulo(p, q, r), r);
+            ins_ang_dec(angul, angulo(q, p, r), r);
             r = r->prox;
 
             if (r == NULL)
                 r = L->inicio;    
         }
 
-        printf("\n p=  %lf, %lf, q =  %lf, %lf \n", p->x, p->y,q->x, q->y);
+        //printf("\n p=  %lf, %lf, q =  %lf, %lf \n", p->x, p->y,q->x, q->y);
 
         p = q;
         q = angul->inicio->ponto;
         
         
         
-        angs_imprimir(angul);
+        //angs_imprimir(angul);
                    
     }
-    
-    p->prox = q; 
-       
+        
+    q->prox = M->inicio; 
+    printf("ultimo: %lf %lf primeiro: %lf %lf \n", q->x, q->y, q->prox->x, q->prox->y);   
 
     return M; 
 }
@@ -131,7 +130,7 @@ double angulo(NO * p, NO * q, NO * r)
     NO * PR = criaNo(r->x - p->x, r->y - p->y);
 
     // cos do angulo entre PQ e PR a partir da def
-    // de produto escalar entre dois vetores
+    // de produto escalar
     ang = prodEscalar(PQ, PR) / (sqrt(norma2(PQ)) * sqrt(norma2(PR)));
 
     free(PQ);
@@ -237,11 +236,11 @@ void angs_imprimir(ANGULOS *l){
 
 
 
-// desacola a lista de angulos
+// desaloca a lista de angulos
 void angs_apagar(ANGULOS **l){
     ANGS *p, *q;
 
-    // se a lista estiver vazia, retorne FALSE
+    // se a lista estiver vazia, retorne 
     if (*l == NULL)
         return;
 
@@ -256,44 +255,4 @@ void angs_apagar(ANGULOS **l){
     
     free(*l);
     
-}
-
-// essas duas funcs tao deprecated, mas vou deixar aqui
-
-
-// encontra o minimo em um vetor e retorna sua posicao
-int minAng(double * vet, int n)
-{
-    int pos = 0;
-    double min = vet[0];
-
-    for (int i = 1; i < n; i++)
-    {
-        if(vet[i] < min)
-        {
-            min = vet[i];
-            pos = i;
-        }
-    }
-    
-    return pos;
-}
-
-
-// encontra o maximo em um vetor e retorna sua posicao
-int maxAng(double * vet, int n)
-{
-    int pos = 0;
-    double max = vet[0];
-
-    for (int i = 1; i < n; i++)
-    {
-        if(vet[i] > max)
-        {
-            max = vet[i];
-            pos = i;
-        }
-    }
-    
-    return pos;
 }

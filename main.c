@@ -49,7 +49,7 @@ int main()
 
     LISTA * m = embrulho(inic,sentido,l);
 
-    printf("\n main: \n");
+    //printf("\n main: \n");
     lista_imprimir(m);
     
     //printf("%lf", angulo(l->inicio,l->inicio->prox, l->inicio->prox->prox));
