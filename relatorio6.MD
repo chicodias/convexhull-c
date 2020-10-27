@@ -1,5 +1,5 @@
 # SCC0223 - ESTRUTURAS DE DADOS 1
-## Relatório do Exercício 6
+## Relatório do Projeto 1: Fecho convexo 
 
 ## Parte 1 - Modelagem
 
