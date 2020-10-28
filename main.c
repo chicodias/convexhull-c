@@ -6,6 +6,8 @@
 #include <stdlib.h>
 #include "lista.h"
 #include "embrulho.h"
+#include "primitivas.h"
+#include "graham.h"
 
 /* 
   @main: lê os pontos em cordenadas x,y da entrada padrão, armazena 
@@ -47,8 +49,9 @@ int main()
 // chamada da função
     //lista_imprimir(l);
 
-    LISTA * m = embrulho(inic,sentido,l);
+    //LISTA * m = embrulho(inic,sentido,l);
 
+    LISTA * m = pilhatolist(graham(l));
     //printf("\n main: \n");
     lista_imprimir(m);
     
