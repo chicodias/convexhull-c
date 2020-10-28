@@ -54,6 +54,7 @@ LISTA * pilhatolist(PILHA * pi)
       t = desempilha(pi);
       lista_inserir(M, t->x, t->y);
    }
+   free(pi);
 /* 
    t = M->inicio;
 
