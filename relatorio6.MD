@@ -1,4 +1,4 @@
-:#  ESTRUTURAS DE DADOS 1:
+#  ESTRUTURAS DE DADOS 1
 ## Relatório do Projeto 1: Fecho convexo 
 ### Hiago Américo, nUSP: 11218469
 ### Francisco Dias, nUSP: 4402962
