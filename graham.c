@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 
-
+/* Recebe uma lista de pontos L e retorna uma pilha com ConvHull(L) */
 PILHA * graham (LISTA * L)
 {
     /* Ele encontra o ponto P com menor coordenada y e ent�o 
@@ -26,60 +26,44 @@ PILHA * graham (LISTA * L)
     q = criaNo(0, p->y);
     
         
-    r = L->inicio->prox;
+    
     
     // calcula o angulo com todos os outros caras do conjunto e a linha horizontal
-    for (i = 0; i < (L->n) - 1 && r != NULL; ++i)
+    for (r = L->inicio->prox; r != NULL; r = r->prox)
     {
         q -> x = r -> x;
         ins_ang(angul, angulo(p, q, r), r);
-        r = r->prox;
+        printf("%p\n",r);
     }
     
-    angs_imprimir(angul);
     // libera o vetor auxiliar criado
     free(q);
 
     empilha(pi, p);
     empilha(pi, angul->inicio->ponto);
-
-
     
     t = angul->inicio->prox;
     
-    while (!pilha_vazia(pi))
+    while (t != NULL)
     {
         top = topo(pi);
-        p = top->ponto;
-        q = top->prox->ponto;
-        
-        printf("%lf %lf", t->ponto->x, t->ponto->y);
-
-        /* se o ponto X em quest�o est� a esquerda do vetor pen�ltimo-�ltimo
-     elemento da pilha (�ltimo elemento da pilha � o topo) ent�o empilhamos
-      e olhamos o pr�ximo;
-    se o ponto X em quest�o est� a direita deste mesmo vetor, ent�o desempilhamos 
-    e voltamos a analisar X. */
-
-
+        q = top->ponto;
+        p = top->prox->ponto;
+    /* se r esta a esquerda do vetor PQ (topo da pilha)
+      empilhamos e olhamos o proximo ponto da lista angul; */
         if (esquerda(p,q,t->ponto))
         {
             empilha(pi,t->ponto);
-            if (t->prox != NULL)
-                t = t->prox;
-            else
-                return pi;
+            t = t->prox;
         }
+/*    agora, se o ponto em questao esta a direita deste mesmo vetor,
+      desempilhamos q e voltamos a analisar a pilha. */
         else
-        {
             desempilha(pi);
-        }
-        
-       
     }
     
+    // libera a lista alocada
     angs_apagar(&angul);
-
 
     return pi;
 }
