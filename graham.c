@@ -25,15 +25,12 @@ PILHA * graham (LISTA * L)
     // alocacao no primeiro no
     q = criaNo(0, p->y);
     
-        
-    
-    
     // calcula o angulo com todos os outros caras do conjunto e a linha horizontal
+    // os angulos sao inseridos em ordenação crescente.
     for (r = L->inicio->prox; r != NULL; r = r->prox)
     {
         q -> x = r -> x;
         ins_ang(angul, angulo(p, q, r), r);
-        printf("%p\n",r);
     }
     
     // libera o vetor auxiliar criado

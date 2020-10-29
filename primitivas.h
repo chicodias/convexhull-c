@@ -46,7 +46,8 @@ int minAng(double * vet, int n);
 
 int maxAng(double * vet, int n);
 
-ANGULOS * criarAng(int n);
+// inicializa a lista de angulos
+ANGULOS * criarAng(void);
 
 // insere um elemento na lista ordenadamente de acordo com a coordenada y.
 void ins_ang (ANGULOS * l, double y, NO * x);

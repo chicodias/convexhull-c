@@ -47,18 +47,26 @@ int main()
     scanf("%d", &sentido);
     
 // chamada da função
-    //lista_imprimir(l);
 
-    //LISTA * m = embrulho(inic,sentido,l);
 
-    LISTA * m = pilhatolist(graham(l));
-    //printf("\n main: \n");
+    LISTA * m = embrulho(l);
+
+    LISTA * n = pilhatolist(graham(l));
+
+    printf("Wrap: \n");
     lista_imprimir(m);
+    //imprime_fecho(n, inic, sentido);
+    printf("\n Graham: \n");
+    lista_imprimir(n);
+    //imprime_fecho(m, inic, sentido);
     
-    //printf("%lf", angulo(l->inicio,l->inicio->prox, l->inicio->prox->prox));
+
+
 
 // desalocação da lista para encerrar a aplicação
     lista_apagar(&l);
     lista_apagar(&m);
+    lista_apagar(&n);
+    
     return 0;
 }

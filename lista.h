@@ -21,6 +21,16 @@ struct pon {
     NO * prox;
 };
 
+// nó de uma lista circular
+typedef struct pon_circ NOc;
+
+struct pon_circ {
+    double x;
+    double y;
+    NOc * prox;
+    NOc * ant;
+};
+
 // cabeça da lista
 struct lista
     {
@@ -37,8 +47,20 @@ void lista_imprimir(LISTA *l); /*Imprime os elementos armazenados na lista*/
 boolean lista_cheia(LISTA *l); /*Retorna TRUE se nao for possivel alocar mais nos*/
 boolean lista_vazia(LISTA *l); /*Retorna TRUE se a lista estiver vazia*/
 void lista_inserir(LISTA *l, double x, double y); /*Insere o PONTO ordenadamente por y*/
-void lista_inserir_x (LISTA* l, double x, double y); // insere ordenademente por x
 void lista_inserir_fim(LISTA *l, double x, double y); /*Insere o PONTO no fim da lista*/
 void lista_remover(LISTA *l, NO * chave); //remove um ponto da lista
+void imprime_fecho(LISTA * l, int inic, char sentido); //imprime uma lista circular na saida padrao
+
+// listas circulares
+void lista_imprimir_circ(NOc *p);
+void lista_imprimir_circ_inv(NOc *p);
+void imprime_fecho(LISTA * l, int inic, char sentido);
+NOc * find(LISTA * l, char coord, int high);
+
+//recebe uma lista simples e retorna uma duplamente encadeada circular 
+NOc * listolisc(LISTA * l);
+
+// desaloca uma lista circular da memoria
+void liberaListaC(NOc * l);
 
 #endif /* LISTA_H */

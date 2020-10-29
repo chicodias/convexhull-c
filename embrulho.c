@@ -17,8 +17,8 @@ basta encontrar o próximo ponto com menor ângulo em relação a aresta PQ, e a
 por diante. A execução termina quando o ponto P inicial é encontrado novamente.
 */
 
-// retorna uma lista circular com o poligono convexo a partir dos pontos em L
-LISTA * embrulho(char pos, int inic, LISTA * L)
+// retorna uma lista com o poligono convexo a partir dos pontos em L
+LISTA * embrulho(LISTA * L)
 {
     // nos que usaremos nas iteracoes
     NO * p, * q, * r;
@@ -45,7 +45,7 @@ LISTA * embrulho(char pos, int inic, LISTA * L)
     // alocacao no primeiro no
     q = criaNo(0, p->y);
     
-    angul = criarAng(L->n - 2);
+    angul = criarAng();
     
     r = L->inicio->prox;
     
@@ -54,6 +54,7 @@ LISTA * embrulho(char pos, int inic, LISTA * L)
     {
         q -> x = r -> x;
         ins_ang(angul, angulo(p, q, r), r);
+        printf("%d\n", i);
         r = r->prox;
     }
     
@@ -70,7 +71,6 @@ LISTA * embrulho(char pos, int inic, LISTA * L)
     while(q != L->inicio)
     {
         lista_inserir_fim(M, q->x, q->y);
-        //lista_imprimir(M);
 
         angs_apagar(&angul);
         r = q->prox;
@@ -78,9 +78,9 @@ LISTA * embrulho(char pos, int inic, LISTA * L)
         if (r == NULL)
             break;
         
-        angul = criarAng(L->n - 2);
+        angul = criarAng();
     
-    // calcula o angulo com todos os outros caras do conjunto
+    // calcula o angulo com todos os outros pontos do conjunto
         for (i = 0; i < (L->n) - 2; ++i)
         {
             ins_ang_dec(angul, angulo(q, p, r), r);
@@ -90,19 +90,10 @@ LISTA * embrulho(char pos, int inic, LISTA * L)
                 r = L->inicio;    
         }
 
-        //printf("\n p=  %lf, %lf, q =  %lf, %lf \n", p->x, p->y,q->x, q->y);
-
         p = q;
-        q = angul->inicio->ponto;
-        
-        
-        
-        //angs_imprimir(angul);
+        q = angul->inicio->ponto; 
                    
     }
-        
-    q->prox = M->inicio; 
-    //printf("ultimo: %lf %lf primeiro: %lf %lf \n", q->x, q->y, q->prox->x, q->prox->y);   
 
     return M; 
 }

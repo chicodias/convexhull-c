@@ -49,9 +49,6 @@ boolean direita(NO * p, NO * q, NO * r)
    return (area2 (p, q, r) < 0);
 }
 
-
-
-
 // calcula o angulo entre o vetor PQ e o vetor PR
 double angulo(NO * p, NO * q, NO * r)
 {
@@ -72,9 +69,10 @@ double angulo(NO * p, NO * q, NO * r)
     return acos(ang); // retorna o angulo no intervalo [0,2pi]
 }
 
-ANGULOS * criarAng(int n)
+// inicializa a lista de angulos
+ANGULOS * criarAng(void)
 {
-    return (ANGULOS *) malloc (n * sizeof(ANGULOS));
+    return (ANGULOS *) malloc (sizeof(ANGULOS));
 }
 
 // insere um elemento na lista ordenadamente de acordo com o angulo
@@ -113,8 +111,7 @@ void ins_ang (ANGULOS * l, double y, NO * x)
         novo->prox = ant->prox;      
         ant->prox = novo;   
     }
-
-    }
+}
 
 
 // insere um elemento na lista ordenadamente de acordo com o angulo
@@ -166,8 +163,6 @@ void angs_imprimir(ANGULOS *l){
     
     return;
 }
-
-
 
 // desaloca a lista de angulos
 void angs_apagar(ANGULOS **l){
