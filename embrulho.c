@@ -7,15 +7,13 @@
 #include "primitivas.h"
 #include "lista.h"
 
-
 /* Algoritmo do embrulho.
 Inicialmente, determine o ponto P do conjunto com menor coordenada y.
 Em seguida encontre o ponto Q, dentre os que outros pontos, com menor ângulo
 em relação a P e a linha horizontal. Esse é um ponto que certamente é vértice 
 do fecho convexo, e mais, a aresta PQ pertence ao fecho convexo. A partir daí,
 basta encontrar o próximo ponto com menor ângulo em relação a aresta PQ, e assim
-por diante. A execução termina quando o ponto P inicial é encontrado novamente.
-*/
+por diante. A execução termina quando o ponto P inicial é encontrado novamente. */
 
 // retorna uma lista com o poligono convexo a partir dos pontos em L
 LISTA * embrulho(LISTA * L)
@@ -38,8 +36,6 @@ LISTA * embrulho(LISTA * L)
     // primeiro elemento da lista: 
     lista_inserir(M, L->inicio->x, L->inicio->y);
 
-    // nao precisa remover os caras, so percorrer a lista.
-    //lista_remover(L,L->inicio);
     // inicializacao do algoritmo
     p = M->inicio;
     // alocacao no primeiro no
@@ -54,13 +50,9 @@ LISTA * embrulho(LISTA * L)
     {
         q -> x = r -> x;
         ins_ang(angul, angulo(p, q, r), r);
-        printf("%d\n", i);
         r = r->prox;
     }
-    
-    // inserindo o menor angulo na lista M
-    //lista_inserir(M, angul->inicio->ponto->x, angul->inicio->ponto->y);
-    
+        
     // libera o vertice criado
     free(q);
 

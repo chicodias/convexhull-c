@@ -72,7 +72,9 @@ double angulo(NO * p, NO * q, NO * r)
 // inicializa a lista de angulos
 ANGULOS * criarAng(void)
 {
-    return (ANGULOS *) malloc (sizeof(ANGULOS));
+    ANGULOS * P = (ANGULOS *) malloc (sizeof(ANGULOS));
+    P->inicio = NULL;
+    return P;
 }
 
 // insere um elemento na lista ordenadamente de acordo com o angulo
@@ -90,7 +92,6 @@ void ins_ang (ANGULOS * l, double y, NO * x)
     
     /* ponteiro para percorrer a lista*/   
     ANGS* p = l->inicio;          
-    
     
     /* procura posição de inserção */   
     while (p != NULL && p->ang < y) 
