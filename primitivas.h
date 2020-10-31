@@ -41,11 +41,6 @@ typedef struct lista_angulos
 retorna o angulo */
 double angulo(NO * p, NO * q, NO * r);
 
-// procura o angulo minimo em um vetor e retorna sua posicao
-int minAng(double * vet, int n);
-
-int maxAng(double * vet, int n);
-
 // inicializa a lista de angulos
 ANGULOS * criarAng(void);
 
@@ -60,6 +55,11 @@ void angs_imprimir(ANGULOS *l);
 
 void angs_apagar(ANGULOS **l);
 
+void insere_inicio_ang (ANGULOS * l, double y, NO * x);
 
+ANGS * minAng(ANGULOS * l);
+ANGS * maxAng(ANGULOS * l);
+
+boolean pontosIguais(NO * p, NO * q);
 
 #endif

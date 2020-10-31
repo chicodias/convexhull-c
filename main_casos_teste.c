@@ -28,7 +28,7 @@ int main()
     int sentido,pnt=0;
     double posx,posy;
     char inic;
-    LISTA * l, * m;
+    LISTA * l;
 
 // inicializacao da lista ligada
     l = lista_criar();
@@ -49,32 +49,52 @@ int main()
     
 // chamada da função
 
-lista_imprimir(l);
+    printf("leu os dados\n");
 
-   m = embrulho(l);
+    double startW, endW, startG,endG;
+    LISTA * m, *n;
+    double mediaG = 0, mediaW = 0;
+
+    for(int k = 0; k<5; ++k)
+    {
+
     
-    lista_imprimir(m);
+    //startW = seconds();
+    //m = embrulho(l);
+    //endW = seconds() - startW;
+    
+
+    startG = seconds();
+    n = pilhatolist(graham(l));
+    endG = seconds() - startG;
     
 
     //printf("Wrap: \n");
     //printf("%lf\n", endW);
     //lista_imprimir(m);
-    //imprime_fecho(m, inic, sentido);
-    //printf("Graham: \n");
-    //printf("%lf\n", endG);
+    //imprime_fecho(n, inic, sentido);
+    printf("Graham: \n");
+    printf("%lf\n", endG);
     //lista_imprimir(n);
     //imprime_fecho(m, inic, sentido);
-   // mediaW = mediaW + endW;
-    //mediaG = mediaG + endG;
-    //}
+    //mediaW = mediaW + endW;
+    mediaG = mediaG + endG;
+    }
 
-    //printf("%.2lf\n", (double) m->n / l->n );
+    printf("\n\n");
+
+    //printf("Media Wrap: \n");
+    //printf("%lf\n", mediaW/10);
+
+    printf("Media Graham: \n");
+    printf("%lf\n", mediaG/5);
+
 
 
 // desalocação da lista para encerrar a aplicação
     lista_apagar(&l);
     lista_apagar(&m);
-
+    lista_apagar(&n);
     
     return 0;
 }

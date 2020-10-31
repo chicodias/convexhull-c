@@ -51,6 +51,9 @@ void lista_inserir_fim(LISTA *l, double x, double y); /*Insere o PONTO no fim da
 void lista_remover(LISTA *l, NO * chave); //remove um ponto da lista
 void imprime_fecho(LISTA * l, int inic, char sentido); //imprime uma lista circular na saida padrao
 
+NO * findLowestY(LISTA * L);
+
+
 // listas circulares
 void lista_imprimir_circ(NOc *p);
 void lista_imprimir_circ_inv(NOc *p);

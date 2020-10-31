@@ -77,6 +77,50 @@ ANGULOS * criarAng(void)
     return P;
 }
 
+void insere_inicio_ang (ANGULOS * l, double y, NO * x)
+{
+    ANGS* novo = (ANGS *)malloc(sizeof(ANGS));
+
+    novo->ang = y;
+    novo->ponto = x;
+    novo->prox = l->inicio;
+
+    l->inicio = novo;
+}
+
+// retorna a posicao anterior na lista do ponto com menor angulo
+// se NULL, esta na primeira posicao.
+ANGS * minAng(ANGULOS * l)
+{  
+    ANGS * min = l->inicio, * p;
+
+    for (p = min; p->prox != NULL; p = p->prox)
+        if (p->prox->ang < min->prox->ang)
+            min = p;
+
+    if(l->inicio->ang < min->ang)
+        min = NULL;
+
+    return min;
+}
+
+// retorna a pos. anterior ao maior angulo da lista l
+ANGS * maxAng(ANGULOS * l)
+{  
+    ANGS * max = l->inicio, * p;
+
+    for (p = max; p->prox != NULL; p = p->prox){
+        if (max->prox->ang < p->prox->ang)
+            max = p;
+
+    }
+
+    if(l->inicio->ang > max->ang)
+        max = NULL;
+
+    return max;
+}
+
 // insere um elemento na lista ordenadamente de acordo com o angulo
 void ins_ang (ANGULOS * l, double y, NO * x)
 {
@@ -184,4 +228,13 @@ void angs_apagar(ANGULOS **l){
     
     free(*l);
     
+}
+
+boolean pontosIguais(NO * p, NO * q)
+{
+    if(p->x == q->x)
+        if(p->y == q->y)
+            return TRUE;
+
+    return FALSE;
 }
