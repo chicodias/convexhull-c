@@ -50,10 +50,16 @@ int main()
 // chamada da função
 
 //lista_imprimir(l);
+double startW, endW, media=0;
 
+for (int i = 0; i < 10; i++)
+{
+    startW = seconds();
    m = embrulho(l);
-    
-    lista_imprimir(m);
+   endW = seconds() - startW;
+   media = media + endW;
+}   
+   // lista_imprimir(m);
     
 
     //printf("Wrap: \n");
@@ -68,7 +74,7 @@ int main()
     //mediaG = mediaG + endG;
     //}
 
-    //printf("%.2lf\n", (double) m->n / l->n );
+    printf("%d pontos: %.2lf s\n",pnt, media/10);
 
 
 // desalocação da lista para encerrar a aplicação
