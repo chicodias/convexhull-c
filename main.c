@@ -55,7 +55,7 @@ double startW, endW, media=0;
 for (int i = 0; i < 10; i++)
 {
     startW = seconds();
-   m = graham(l);
+   m = embrulho(l);
    endW = seconds() - startW;
    media = media + endW;
 }   

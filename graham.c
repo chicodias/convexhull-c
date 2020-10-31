@@ -14,22 +14,18 @@ LISTA * graham (LISTA * L)
     pontos e entao basta percorrermos os outros. */
 
     PILHA * pi = criapilha(), * top;
-    NO * p, * q, *r, * inicio;
+    NO * p, * q, *r;
     ANGS * t;
     ANGULOS * angul = criarAng();
     int i;
 
-
     p = findLowestY(L);
-   
-    inicio = p;
+
 
     // inicializacao do algoritmo
 
     // alocacao no primeiro no (linha horizontal)
     q = criaNo(p->x + 100, p->y);
-    
-    angul = criarAng();
     
     // calcula o angulo entre os outros pontos do conjunto e a linha horizontal
     for (r = L->inicio; r != NULL; r = r->prox)

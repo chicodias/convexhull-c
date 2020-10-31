@@ -121,84 +121,6 @@ ANGS * maxAng(ANGULOS * l)
     return max;
 }
 
-// insere um elemento na lista ordenadamente de acordo com o angulo
-void ins_ang (ANGULOS * l, double y, NO * x)
-{
-    /* cria novo nó */
-    ANGS* novo = (ANGS *)malloc(sizeof(ANGS));
-
-    novo->ang = y;
-    novo->ponto = x;
-    novo->prox = NULL;
-
-    /* ponteiro para elemento anterior */   
-    ANGS* ant = NULL;     
-    
-    /* ponteiro para percorrer a lista*/   
-    ANGS* p = l->inicio;          
-    
-    /* procura posição de inserção */   
-    while (p != NULL && p->ang < y) 
-    {      
-        ant = p;      
-        p = p->prox;
-    }   
-    
-    /* insere elemento */   
-    if (ant == NULL) 
-    {   /* insere elemento no início */      
-        novo->prox = l->inicio;      
-        l->inicio = novo;   
-    }
-    
-    else 
-    {   /* insere elemento no meio da lista */      
-        novo->prox = ant->prox;      
-        ant->prox = novo;   
-    }
-}
-
-
-// insere um elemento na lista ordenadamente de acordo com o angulo
-void ins_ang_dec (ANGULOS * l, double y, NO * x)
-{
-    /* cria novo nó */
-    ANGS* novo = (ANGS *)malloc(sizeof(ANGS));
-
-    novo->ang = y;
-    novo->ponto = x;
-    novo->prox = NULL;
-
-    /* ponteiro para elemento anterior */   
-    ANGS* ant = NULL;     
-    
-    /* ponteiro para percorrer a lista*/   
-    ANGS* p = l->inicio;          
-    
-    
-    /* procura posição de inserção */   
-    while (p != NULL && p->ang > y) 
-    {      
-        ant = p;      
-        p = p->prox;
-    }   
-    
-    /* insere elemento */   
-    if (ant == NULL) 
-    {   /* insere elemento no início */      
-        novo->prox = l->inicio;      
-        l->inicio = novo;   
-    }
-    
-    else 
-    {   /* insere elemento no meio da lista */      
-        novo->prox = ant->prox;      
-        ant->prox = novo;   
-    }
-
-    }
-
-
 // imprime a lista na saída padrão
 void angs_imprimir(ANGULOS *l){
     if (l == NULL)
@@ -239,42 +161,42 @@ boolean pontosIguais(NO * p, NO * q)
     return FALSE;
 }
 
-/* sorts the linked list by changing next pointers (not data) */
+
+// ordena a lista ligada alterando os ponteiros *prox
 void MergeSort(ANGS ** headRef) 
 { 
     ANGS* head = *headRef; 
     ANGS* a; 
     ANGS* b; 
   
-    /* Base case -- length 0 or 1 */
+    /* Caso Base -- tamanhos 0 ou 1 */
     if ((head == NULL) || (head->prox == NULL)) { 
         return; 
     } 
   
-    /* Split head into 'a' and 'b' sublists */
+    // Divide 'a' e 'b' em sublistas auxiliares
     FrontBackSplit(head, &a, &b); 
   
-    /* Recursively sort the sublists */
+    // ordena as sublistas recursivamente
     MergeSort(&a); 
     MergeSort(&b); 
   
-    /* answer = merge the two sorted lists together */
+    // junta novamente as listas já ordenadas
     *headRef = SortedMerge(a, b); 
 } 
 
-/* See https:// www.geeksforgeeks.org/?p=3622 for details of this  
-function */
+// junta duas listas ordenadas
 ANGS* SortedMerge(ANGS* a, ANGS* b) 
 { 
     ANGS* result = NULL; 
   
-    /* Base cases */
+    // casos base
     if (a == NULL) 
         return (b); 
     else if (b == NULL) 
         return (a); 
   
-    /* Pick either a or b, and recur */
+    // pega um dois dois e envia pra recursao
     if (a->ang <= b->ang) { 
         result = a; 
         result->prox = SortedMerge(a->prox, b); 
@@ -286,11 +208,7 @@ ANGS* SortedMerge(ANGS* a, ANGS* b)
     return (result); 
 } 
   
-/* UTILITY FUNCTIONS */
-/* Split the nodes of the given list into front and back halves, 
-    and return the two lists using the reference parameters. 
-    If the length is odd, the extra node should go in the front list. 
-    Uses the fast/slow pointer strategy. */
+// divide a lista ao meio
 void FrontBackSplit(ANGS* source, 
                     ANGS** frontRef, ANGS** backRef) 
 { 
@@ -299,7 +217,7 @@ void FrontBackSplit(ANGS* source,
     slow = source; 
     fast = source->prox; 
   
-    /* Advance 'fast' two nodes, and advance 'slow' one node */
+    // fast corre dois nos, para cada um de slow
     while (fast != NULL) { 
         fast = fast->prox; 
         if (fast != NULL) { 
@@ -308,8 +226,7 @@ void FrontBackSplit(ANGS* source,
         } 
     } 
   
-    /* 'slow' is before the midpoint in the list, so split it in two 
-    at that point. */
+    // slow está um antes do meio da lista, dividindo daí
     *frontRef = source; 
     *backRef = slow->prox; 
     slow->prox = NULL; 

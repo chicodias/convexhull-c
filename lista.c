@@ -313,7 +313,17 @@ NOc * find(LISTA * l, char coord, int high)
             break;
         case 0:
             /* encontra o menor y */
-            found = findLowestY(l);
+            while (p != q)
+            {
+                if(found->y > q->y)
+                    found = q;
+
+                else if(found->y == q->y)
+                    if(found->x > q->x)
+                        found = q;   
+
+                q = q->prox;
+            }
             break;
         default:
             break;
