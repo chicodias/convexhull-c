@@ -62,4 +62,10 @@ ANGS * maxAng(ANGULOS * l);
 
 boolean pontosIguais(NO * p, NO * q);
 
+/* sorts the linked list by changing next pointers (not data) */
+void MergeSort(ANGS ** headRef);
+ANGS* SortedMerge(ANGS* a, ANGS* b);
+void FrontBackSplit(ANGS* source, 
+                    ANGS** frontRef, ANGS** backRef);
+
 #endif
