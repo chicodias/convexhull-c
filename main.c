@@ -49,7 +49,7 @@ int main()
     
 // chamada da função
 
-lista_imprimir(l);
+//lista_imprimir(l);
 
    m = embrulho(l);
     

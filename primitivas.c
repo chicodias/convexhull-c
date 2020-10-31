@@ -98,7 +98,7 @@ ANGS * minAng(ANGULOS * l)
         if (p->prox->ang < min->prox->ang)
             min = p;
 
-    if(l->inicio->ang < min->ang)
+    if(l->inicio->ang < min->prox->ang)
         min = NULL;
 
     return min;
@@ -115,7 +115,7 @@ ANGS * maxAng(ANGULOS * l)
 
     }
 
-    if(l->inicio->ang > max->ang)
+    if(l->inicio->ang > max->prox->ang)
         max = NULL;
 
     return max;
