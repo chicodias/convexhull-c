@@ -55,13 +55,6 @@ LISTA * pilhatolist(PILHA * pi)
       lista_inserir(M, t->x, t->y);
    }
    free(pi);
-/* 
-   t = M->inicio;
-
-   while (t->prox != NULL)
-      t = t->prox;
-
-   t ->prox = M->inicio; */
    
    return M;
 }

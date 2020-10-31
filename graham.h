@@ -11,6 +11,6 @@
 #include "lista.h"
 
 
-PILHA * graham (LISTA * L);
+LISTA * graham (LISTA * L);
 
 #endif

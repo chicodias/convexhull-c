@@ -49,9 +49,6 @@ boolean direita(NO * p, NO * q, NO * r)
    return (area2 (p, q, r) < 0);
 }
 
-
-
-
 // calcula o angulo entre o vetor PQ e o vetor PR
 double angulo(NO * p, NO * q, NO * r)
 {
@@ -72,9 +69,56 @@ double angulo(NO * p, NO * q, NO * r)
     return acos(ang); // retorna o angulo no intervalo [0,2pi]
 }
 
-ANGULOS * criarAng(int n)
+// inicializa a lista de angulos
+ANGULOS * criarAng(void)
 {
-    return (ANGULOS *) malloc (n * sizeof(ANGULOS));
+    ANGULOS * P = (ANGULOS *) malloc (sizeof(ANGULOS));
+    P->inicio = NULL;
+    return P;
+}
+
+void insere_inicio_ang (ANGULOS * l, double y, NO * x)
+{
+    ANGS* novo = (ANGS *)malloc(sizeof(ANGS));
+
+    novo->ang = y;
+    novo->ponto = x;
+    novo->prox = l->inicio;
+
+    l->inicio = novo;
+}
+
+// retorna a posicao anterior na lista do ponto com menor angulo
+// se NULL, esta na primeira posicao.
+ANGS * minAng(ANGULOS * l)
+{  
+    ANGS * min = l->inicio, * p;
+
+    for (p = min; p->prox != NULL; p = p->prox)
+        if (p->prox->ang < min->prox->ang)
+            min = p;
+
+    if(l->inicio->ang < min->prox->ang)
+        min = NULL;
+
+    return min;
+}
+
+// retorna a pos. anterior ao maior angulo da lista l
+ANGS * maxAng(ANGULOS * l)
+{  
+    ANGS * max = l->inicio, * p;
+
+    for (p = max; p->prox != NULL; p = p->prox){
+        if (max->prox->ang < p->prox->ang)
+            max = p;
+
+    }
+
+    if(l->inicio->ang > max->prox->ang)
+        max = NULL;
+
+    return max;
 }
 
 // insere um elemento na lista ordenadamente de acordo com o angulo
@@ -92,7 +136,6 @@ void ins_ang (ANGULOS * l, double y, NO * x)
     
     /* ponteiro para percorrer a lista*/   
     ANGS* p = l->inicio;          
-    
     
     /* procura posição de inserção */   
     while (p != NULL && p->ang < y) 
@@ -113,8 +156,7 @@ void ins_ang (ANGULOS * l, double y, NO * x)
         novo->prox = ant->prox;      
         ant->prox = novo;   
     }
-
-    }
+}
 
 
 // insere um elemento na lista ordenadamente de acordo com o angulo
@@ -167,8 +209,6 @@ void angs_imprimir(ANGULOS *l){
     return;
 }
 
-
-
 // desaloca a lista de angulos
 void angs_apagar(ANGULOS **l){
     ANGS *p, *q;
@@ -188,4 +228,13 @@ void angs_apagar(ANGULOS **l){
     
     free(*l);
     
+}
+
+boolean pontosIguais(NO * p, NO * q)
+{
+    if(p->x == q->x)
+        if(p->y == q->y)
+            return TRUE;
+
+    return FALSE;
 }

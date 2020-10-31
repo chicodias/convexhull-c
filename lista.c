@@ -38,6 +38,21 @@ LISTA *lista_criar(void){
     return lis;
 }
 
+// insere um elemento no começo da lista.
+void lista_inserir (LISTA* l, double x, double y)
+{
+    /* cria novo nó */
+    NO * novo = (NO *)malloc(sizeof(NO));
+
+    novo->x = x;
+    novo->y = y;
+    novo->prox = l->inicio;
+
+    l->inicio = novo;
+    (l->n)++;
+}
+
+
 /*
 Limpeza do elemento lista e desalocação seu ponteiro
 */
@@ -73,6 +88,28 @@ void lista_imprimir(LISTA *l){
     return;
 } 
 
+void lista_imprimir_circ(NOc *l){
+    if (l == NULL)
+        return;
+    NOc *p = l;
+    printf("%.2lf %.2lf\n",p->x, p->y);
+    for (p = p->prox; p != l; p = p->prox)
+        printf("%.2lf %.2lf\n",p->x, p->y);
+    
+    return;
+} 
+
+void lista_imprimir_circ_inv(NOc *l){
+    if (l == NULL)
+        return;
+    NOc *p = l;
+    printf("%.2lf %.2lf\n",p->x, p->y);
+    for (p = p->ant; p != l; p = p->ant)
+        printf("%.2lf %.2lf\n",p->x, p->y);
+    
+    return;
+} 
+
 // indica se uma dada lista está vazia retornando TRUE
 boolean lista_vazia(LISTA *l){
     if (l == NULL)
@@ -84,86 +121,26 @@ boolean lista_vazia(LISTA *l){
 }
 
 
-// insere um elemento na lista ordenadamente de acordo com a coordenada y.
-void lista_inserir (LISTA* l, double x, double y)
+int compara(NO * p, NO * q)
 {
-    /* cria novo nó */
-    NO* novo = (NO *)malloc(sizeof(NO));
+    //negativo se p-q<0
+    //positivo se p-q>0
+    
+}
 
-    novo->x = x;
-    novo->y = y;
-    novo->prox = NULL;
-
-    /* ponteiro para elemento anterior */   
-    NO* ant = NULL;     
-    
-    /* ponteiro para percorrer a lista*/   
-    NO* p = l->inicio;          
-    
-    
-    /* procura posição de inserção */   
-    while (p != NULL && p->y < y) 
-    {      
-        ant = p;      
-        p = p->prox;
-    }   
-    
-    /* insere elemento */   
-    if (ant == NULL) 
-    {   /* insere elemento no início */      
-        novo->prox = l->inicio;      
-        l->inicio = novo;   
-    }
-    
-    else 
-    {   /* insere elemento no meio da lista */      
-        novo->prox = ant->prox;      
-        ant->prox = novo;   
-    }
-
-    (l->n)++;
-    }
-
-// insere um elemento na lista ordenadamente de acordo com a coordenada x.
-void lista_inserir_x (LISTA* l, double x, double y)
+NO * findLowestY(LISTA * L)
 {
-    /* cria novo nó */
-    NO* novo = (NO *)malloc(sizeof(NO));
-
-    novo->x = x;
-    novo->y = y;
-    novo->prox = NULL;
-
-    /* ponteiro para elemento anterior */   
-    NO* ant = NULL;     
+    NO * p = L->inicio, * q = p;
     
-    /* ponteiro para percorrer a lista*/   
-    NO* p = l->inicio;          
-    
-    
-    /* procura posição de inserção */   
-    while (p != NULL && p->x < x) 
-    {      
-        ant = p;      
+    while (p != NULL)
+    {
+        if (q->y > p->y)
+            q = p;
         p = p->prox;
-    }   
-    
-    /* insere elemento */   
-    if (ant == NULL) 
-    {   /* insere elemento no início */      
-        novo->prox = l->inicio;      
-        l->inicio = novo;   
     }
     
-    else 
-    {   /* insere elemento no meio da lista */      
-        novo->prox = ant->prox;      
-        ant->prox = novo;   
-    }
-
-    (l->n)++;
-    }
-
+    return q;
+}
 
 // remove um elemento da lista e retorna TRUE se conseguir.
 // se não encontrar, retorna FALSE
@@ -222,4 +199,189 @@ void lista_inserir_fim (LISTA* l, double x, double y)
     } 
     ant->prox = novo;
 
+}
+
+// recebe uma lista com o fecho e imprime na saida padrao
+// os pontos pertencentes de acordo com as variáveis:
+// inic: ponto que a impressao é iniciada (L, R, D ou U)
+// sentido: 0 - anti horario; 1 - horario
+void imprime_fecho(LISTA * l, int inic, char sentido)
+{
+    
+    NOc * first;
+    switch (inic)
+    {
+    case 'L':
+        first = find(l, 'x', 0);
+        break;
+
+    case 'R':
+        first = find(l, 'x', 1);
+        break;
+
+    case 'D':
+        first = find(l, 'y', 0);
+        break;
+
+    case 'U':
+        first = find(l, 'y', 1);
+        break;
+
+    default:
+        break;
+    }
+    /* switch (sentido)
+    {
+    case 1:
+        lista_imprimir_circ(first);
+        break;
+    
+    case 0:
+        lista_imprimir_circ_inv(first);
+        break;
+    
+    default:
+        break;
+    }   
+     */liberaListaC(first);
+}
+
+// encontra a maior ou a menor coordenada de x ou y e retorna uma lista circular ordenada 
+NOc * find(LISTA * l, char coord, int high)
+{
+    printf("procurando %c ", coord);
+    NOc * found, * p, * q;
+
+    p = listolisc(l);
+    found = p;
+    q = p->prox;
+
+    switch (coord)
+    {
+    case 'x':
+        switch (high)
+        {
+        case 1:
+            /* encontra o maior x */
+            while (p != q)
+            {
+                if(found->x < q->x)
+                    found = q;
+
+                else if(found->x == q->x)
+                    if(found->y > q->y)
+                        found = q;   
+
+                q = q->prox;
+            }
+            break;
+        case 0:
+            /* encontra o menor x */
+            while (p != q)
+            {
+                if(found->x > q->x)
+                    found = q;
+
+                else if(found->x == q->x)
+                    if(found->y > q->y)
+                        found = q;   
+
+                q = q->prox;
+            }
+            break;
+        default:
+            break;
+        }
+        break;
+    
+    case 'y':
+        switch (high)
+        {
+        case 1:
+            /* encontra o maior y */
+            while (p != q)
+            {
+                if(found->y < q->y)
+                    found = q;
+
+                else if(found->y == q->y)
+                    if(found->x > q->x)
+                        found = q;   
+
+                q = q->prox;
+            }
+            break;
+        case 0:
+            /* encontra o menor y */
+            while (p != q)
+            {
+                if(found->y > q->y)
+                    found = q;
+
+                else if(found->y == q->y)
+                    if(found->x > q->x)
+                        found = q;   
+
+                q = q->prox;
+            }
+            break;
+        default:
+            break;
+        }
+        break;
+
+    default:
+        break;
+    }
+    return found;
+}
+
+
+NOc * criaNoc(double x, double y)
+{
+    NOc * p = (NOc *) malloc(sizeof(NOc));
+
+    p->x = x;
+    p->y = y;
+    p->prox = NULL;
+    p->ant = NULL;
+
+    return p;
+}
+
+NOc * listolisc(LISTA * l)
+{
+    NO * p = l->inicio;
+    NOc * novo, * ant, *inic;
+
+    ant = criaNoc(p->x, p->y);
+    inic = ant;
+    p = p->prox;
+    while(p!=NULL)
+    {
+        novo = criaNoc(p->x, p->y);
+        novo->ant = ant;
+        ant->prox = novo;
+        p = p->prox;
+        ant = novo;
+    }
+
+    novo->prox = inic;
+    inic->ant = novo;
+printf("%.2lf,%.2lf e %.2lf,%.2lf", inic->x,inic->y, inic->ant->x, inic->ant->y);
+    return inic;
+}
+
+void liberaListaC(NOc * l)
+{
+    NOc * p = l , * q = l->prox, *tmp;
+
+    while (q != p)
+    {
+        tmp = q;
+        q = q->prox;
+        free(tmp);
+
+    }
+    free(p);
 }

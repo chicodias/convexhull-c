@@ -10,6 +10,6 @@
 
 /* retorna uma lista circular com o poligono convexo a partir dos pontos em L
 */
-LISTA * embrulho(char pos, int inic, LISTA * L);
+LISTA * embrulho(LISTA * L);
 
 #endif // embrulho.h
