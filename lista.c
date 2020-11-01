@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include "lista.h"
 
-// aloca um no dinamicamente com as cordenadas e NO->prox = NULL
+// recebe um ponto (x,y), aloca no heap, inicializa e retorna o endereço de um NO
 NO * criaNo(double x, double y)
 {
     NO * p = (NO *) malloc(sizeof(NO));
@@ -19,11 +19,9 @@ NO * criaNo(double x, double y)
     return p;
 }
 
-/*
-Criação da lista com alocação dinâmica e inicialização do ponteiro inicio
-Retorna o ponteiro da lista
-*/
 
+// Criação da lista com alocação dinâmica e inicialização do ponteiro inicio
+// Retorna o ponteiro da lista
 LISTA *lista_criar(void){
     LISTA * lis;
 
@@ -52,11 +50,7 @@ void lista_inserir (LISTA* l, double x, double y)
     (l->n)++;
 }
 
-
-/*
-Limpeza do elemento lista e desalocação seu ponteiro
-*/
-
+//Limpeza do elemento lista e desalocação seu ponteiro
 boolean lista_apagar(LISTA **l){
     NO *p, *q;
 
@@ -78,6 +72,7 @@ boolean lista_apagar(LISTA **l){
     return TRUE;
 }
 
+// inverte a ordem dos elementos de uma lista L
 void lista_inverter(NO ** L)
 {
     NO * anterior = NULL,
@@ -93,7 +88,7 @@ void lista_inverter(NO ** L)
     *L = anterior;
 }
 
-// imprime a lista na saída padrão
+// recebe uma lista de pontos e imprime-a na saída padrão
 void lista_imprimir(LISTA *l){
     if (l == NULL)
         return;
@@ -103,7 +98,7 @@ void lista_imprimir(LISTA *l){
     return;
 } 
 
-// Função que encontra o menor y 
+// Função que encontra o menor y e retorna o endereço de seu NO
 NO * findLowestY(LISTA * L)
 {
     NO * p = L->inicio, * q = p;
@@ -121,7 +116,7 @@ NO * findLowestY(LISTA * L)
     return q;
 }
 
-// Função que encontra o menor x 
+// Função que encontra o menor x e retorna o endereço de seu NO
 NO * findLowestX(LISTA * L)
 {
     NO * p = L->inicio, * q = p;
@@ -135,21 +130,21 @@ NO * findLowestX(LISTA * L)
                 q = p;
         p = p->prox;
     }
-    
+
     return q;
 }
 
-// Função que encontra o maior y
+// Função que encontra o maior y e retorna o endereço de seu NO
 NO * findHighestY(LISTA * L)
 {
     NO * p = L ->inicio, * q = p;
 
-    while(p != NULL)
+    while (p != NULL)
     {
         if (q->y < p->y)
             q = p;
         else if (q->y == p->y)
-            if(q->x < p->x)
+            if (q->x < p->x)
                 q = p;
         p = p->prox;
     }
@@ -161,12 +156,12 @@ NO * findHighestX(LISTA * L)
 {
     NO * p = L ->inicio, * q = p;
 
-    while(p != NULL)
+    while (p != NULL)
     {
-        if(q->x < p->x)
+        if (q->x < p->x)
             q = p;
         else if (q->x == p->x)
-            if(q->y < p->y)
+            if (q->y < p->y)
                 q = p;
         p = p->prox;
     }
@@ -177,12 +172,11 @@ NO * findHighestX(LISTA * L)
 // os pontos pertencentes de acordo com as variáveis:
 // inic: ponto que a impressao é iniciada (L, R, D ou U)
 // sentido: 0 - anti horario; 1 - horario
-
 void imprime_fecho(LISTA * l, char inic, int sentido)
 {
     NO * first;
 
-   if(sentido)
+   if (sentido)
         lista_inverter(&(l->inicio));
 
     switch (inic)
@@ -218,11 +212,10 @@ void imprime_fecho(LISTA * l, char inic, int sentido)
 
 }
 
-// encontra a maior ou a menor coordenada de x ou y e retorna uma lista circular ordenada 
+// retorna o ponto que a impressao será iniciada (L, R, D ou U)
 NO * find(LISTA * l, char coord, int high)
 {
     NO * p = l->inicio, * q = p->prox, * found = p;
-
 
     switch (coord)
     {
@@ -253,12 +246,10 @@ NO * find(LISTA * l, char coord, int high)
             /* encontra o menor y */
             found = findLowestY(l);
             break;
-
         default:
             break;
         }
         break;
-
     default:
         break;
     }

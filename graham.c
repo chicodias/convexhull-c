@@ -10,8 +10,7 @@ LISTA * graham (LISTA * L)
 {
     /* Encontra o ponto P com menor coordenada y;
     ordena os pontos restantes pelo angulo em relacao a linha 
-    horizontal que passa pelo ponto P. Agora, com ajuda de uma pilha,
-    o algoritmo trabalha em tempo linear. Empilhamos os dois primeiros 
+    horizontal que passa pelo ponto P. Empilhamos os dois primeiros 
     pontos e entao basta percorrermos os outros. */
 
     PILHA * pi = criapilha(), * top;
@@ -20,11 +19,9 @@ LISTA * graham (LISTA * L)
     ANGULOS * angul = criarAng();
     int i;
 
-    p = findLowestY(L);
-
-
+    
     // inicializacao do algoritmo
-
+    p = findLowestY(L);
     // alocacao no primeiro no (linha horizontal)
     q = criaNo(p->x + 100, p->y);
     
@@ -35,14 +32,13 @@ LISTA * graham (LISTA * L)
 
     // libera o ponto auxiliar criado
     free(q);
-    
 
     // ordena a lista de angulos
     mergeSort(&(angul->inicio));
     
      q = angul->inicio->ponto;
 
-    // insere os dois primeiros pontos na pilha
+    // empilha os dois primeiros pontos
     empilha(pi, p);
     empilha(pi, q);
     
@@ -57,8 +53,8 @@ LISTA * graham (LISTA * L)
             p = top->prox->ponto;
         }
 
-  // se r esta a esquerda do vetor PQ (topo da pilha)
-  //  empilhamos e olhamos o proximo ponto da lista angul; 
+  //   se r esta a esquerda do vetor PQ (topo da pilha)
+  //        empilhamos e olhamos o proximo ponto da lista angul; 
         if (esquerda(p,q,t->ponto))
         {
             empilha(pi,t->ponto);
@@ -66,7 +62,7 @@ LISTA * graham (LISTA * L)
         }
 
 //    agora, se o ponto em questao esta a direita deste mesmo vetor,
-      //desempilhamos q e voltamos a analisar a pilha. 
+//                 desempilhamos q e voltamos a analisar a pilha. 
         else
             desempilha(pi);
     }

@@ -25,10 +25,7 @@ LISTA * embrulho(LISTA * L)
     // lista com os angulos e respectivos apontadores
     ANGULOS * angul;
     ANGS * a, * b;
-    // posicao na lista do vertice com menor angulo
-    int posic;
     
-    int i=0;
     
     // inicializacao da lista com elementos do poligono
     M = lista_criar();
@@ -49,10 +46,7 @@ LISTA * embrulho(LISTA * L)
     // calcula o angulo entre os outros pontos do conjunto e a linha horizontal
     for (r = L->inicio; r != NULL; r = r->prox)
         if (!pontosIguais(p,r))
-            insere_inicio_ang(angul, angulo(p, q, r), r);
-
-   // angs_imprimir(angul);
-    
+            insere_inicio_ang(angul, angulo(p, q, r), r);  
         
     // libera o vertice criado
     free(q);  
@@ -74,54 +68,39 @@ LISTA * embrulho(LISTA * L)
     q = b->ponto;
     free(b);
 
-
-
-    insere_inicio_ang(angul, -6, p);
-  //  angs_imprimir(angul);
+    // insere p na lista com angulo -inf para o criterio de parada
+    insere_inicio_ang(angul, -7, p);
+  
     
     // agora fazemos isso iterativamente até que o proximo vertice
     // do fecho convexo seja novamente o ponto p.
     
     while (!pontosIguais(inicio,q))
     {
-        //printf("\n inseriu %lf %lf\n    \n", q->x, q->y);
-        lista_inserir(M, q->x, q->y);
-        
-      //  a = angul->inicio;
-        //for(r = a->ponto; r != NULL; a = a->prox->ponto)
-        
-    // calcula o angulo com todos os outros pontos do conjunto
+       lista_inserir(M, q->x, q->y);
 
+    // calcula o angulo com todos os pontos na lista angul
        for(a = angul->inicio; a!= NULL; a = a->prox)
         {          
             r = a->ponto;
-            if(!pontosIguais(p,r))
+            if (!pontosIguais(p,r))
                 a->ang = angulo(q, p, r);
-            // se p = r, angulo(p,q,r) = -inf
+        
+        // algulo de -inf para pontos iguais
             else
                 a->ang = -7;
-                
-            //printf("alpha = %.2lf para (%.2lf,%.2lf)\n",a->ang, a->ponto->x, a->ponto->y);
         }
-        //angs_imprimir(angul);
-        
-       // printf("\n\nsaiu do for\n");
-        
-       
-        // escolhe o ponto com o maior angulo e remove-o da lista
+               
+    //  escolhe o ponto com o maior angulo e remove-o da lista
         a = maxAng(angul);
-            
-      //  printf("\n anterior %lf %lf\n",a->ponto->x, a->ponto->y);
         
-      // printf("\n %p maior: %lf %lf\n",&a,a->prox->ponto->x, a->prox->ponto->y);
-        
-        //se o ponto nao é o primeiro da lista angul
+    // se o ponto nao é o primeiro da lista angul
         if (a != NULL)
         {
-        b = a->prox;
-        a->prox = b->prox;
+            b = a->prox;
+            a->prox = b->prox;
         }
-
+    // ponto maximo no inicio da lista angul
         else
         {
             b = angul->inicio;
@@ -130,12 +109,11 @@ LISTA * embrulho(LISTA * L)
         
         p = q;
         q = b->ponto;
-       // printf("p = %lf, %lf q = %lf %lf \n",p->x,p->y,q->x,q->y);
         free(b);
         
-        }
+    }
 
-    // libera a lista de angulos restantes
+    // libera a lista restante de angulos
     angs_apagar(&angul);
 
     return M; 

@@ -1,14 +1,13 @@
 /* 
  * File:   primitivas.h
  * Author: Francisco Rosa Dias de Miranda e Hiago Vinicius Americo
-  (baseado no arquivo lista.h de Eliane Gniech Karasawa)
  */
-
 #ifndef PRIMITIVAS_H
 #define PRIMITIVAS_H
 
 #include "lista.h"
 
+// definicao do TAD lista ligada que armazena os angulos
 typedef struct angulos ANGS;
 
 struct angulos
@@ -22,7 +21,6 @@ typedef struct lista_angulos
 {
     ANGS * inicio;
 } ANGULOS;
-
 
 // RETORNA o produto escalar entre dois vetores 
 double prodEscalar (NO * p, NO * q);
@@ -46,9 +44,6 @@ ANGULOS * criarAng(void);
 // insere um elemento no começo da lista
 void insere_inicio_ang (ANGULOS * l, double y, NO * x);
 
-// imprime a lista de angulos
-void angs_imprimir(ANGULOS *l);
-
 // desaloca uma lista de ANGS
 void angs_apagar(ANGULOS **l);
 
@@ -58,17 +53,7 @@ ANGS * minAng(ANGULOS * l);
 // retorna o máximo de uma lista de ANGS
 ANGS * maxAng(ANGULOS * l);
 
-// Compara dos pontos p e q
+// retorna TRUE se dois pontos são iguais
 boolean pontosIguais(NO * p, NO * q);
-
-/* // ordenaa lista de angulos
-void MergeSort(ANGS ** headRef);
-
-// função de ordenação auxiliar que junta duas listas ordenadas
-ANGS* SortedMerge(ANGS* a, ANGS* b);
-
-// função auxiliar que divide a lista ao meio
-void FrontBackSplit(ANGS* source, 
-                    ANGS** frontRef, ANGS** backRef); */
 
 #endif

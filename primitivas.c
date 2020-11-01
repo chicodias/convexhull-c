@@ -1,3 +1,8 @@
+/* 
+ * File:   primitivas.c
+ * Author: Francisco Rosa Dias de Miranda e Hiago Vinicius Americo
+ */
+
 #include "lista.h"
 #include "primitivas.h"
 #include <stdlib.h>
@@ -38,15 +43,9 @@ double area2(NO * p, NO * q, NO * r)
  formada ao estendermos o segmento AB nos dois sentidos. A primitiva 
  é falsa caso contrário. Analogamente temos a primitiva Direita.
 */
-
 boolean esquerda(NO * p, NO * q, NO * r)
 {
    return (area2 (p, q, r) > 0);
-}
-
-boolean direita(NO * p, NO * q, NO * r)
-{
-   return (area2 (p, q, r) < 0);
 }
 
 // calcula o angulo entre o vetor PQ e o vetor PR
@@ -121,16 +120,6 @@ ANGS * maxAng(ANGULOS * l)
     return max;
 }
 
-// imprime a lista na saída padrão
-void angs_imprimir(ANGULOS *l){
-    if (l == NULL)
-        return;
-    for (ANGS *p = l->inicio; p != NULL; p = p->prox)
-        printf("alpha = %.2lf para (%.2lf,%.2lf)\n",p->ang, p->ponto->x, p->ponto->y);
-    
-    return;
-}
-
 // desaloca a lista de angulos
 void angs_apagar(ANGULOS **l){
     ANGS *p, *q;
@@ -152,6 +141,7 @@ void angs_apagar(ANGULOS **l){
     
 }
 
+// retorna TRUE se P = Q
 boolean pontosIguais(NO * p, NO * q)
 {
     if(p->x == q->x)
@@ -160,74 +150,3 @@ boolean pontosIguais(NO * p, NO * q)
 
     return FALSE;
 }
-
-/* 
-// ordena a lista ligada alterando os ponteiros *prox
-void MergeSort(ANGS ** headRef) 
-{ 
-    ANGS* head = *headRef; 
-    ANGS* a; 
-    ANGS* b; 
-  
-    // Caso Base -- tamanhos 0 ou 1
-    if ((head == NULL) || (head->prox == NULL)) { 
-        return; 
-    } 
-  
-    // Divide 'a' e 'b' em sublistas auxiliares
-    FrontBackSplit(head, &a, &b); 
-  
-    // ordena as sublistas recursivamente
-    MergeSort(&a); 
-    MergeSort(&b); 
-  
-    // junta novamente as listas já ordenadas
-    *headRef = SortedMerge(a, b); 
-} 
-
-// junta duas listas ordenadas
-ANGS* SortedMerge(ANGS* a, ANGS* b) 
-{ 
-    ANGS* result = NULL; 
-  
-    // casos base
-    if (a == NULL) 
-        return (b); 
-    else if (b == NULL) 
-        return (a); 
-  
-    // pega um dos dois e envia pra recursao
-    if (a->ang <= b->ang) { 
-        result = a; 
-        result->prox = SortedMerge(a->prox, b); 
-    } 
-    else { 
-        result = b; 
-        result->prox = SortedMerge(a, b->prox); 
-    } 
-    return (result); 
-} 
-  
-// divide a lista ao meio
-void FrontBackSplit(ANGS* source, 
-                    ANGS** frontRef, ANGS** backRef) 
-{ 
-    ANGS* fast; 
-    ANGS* slow; 
-    slow = source; 
-    fast = source->prox; 
-  
-    // fast corre dois nos, para cada um de slow
-    while (fast != NULL) { 
-        fast = fast->prox; 
-        if (fast != NULL) { 
-            slow = slow->prox; 
-            fast = fast->prox; 
-        } 
-    } 
-  
-    // slow está um antes do meio da lista, dividindo daí
-    *frontRef = source; 
-    *backRef = slow->prox; 
-    slow->prox = NULL; 
-}  */

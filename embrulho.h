@@ -8,8 +8,7 @@
 #include <stdio.h>
 #include "primitivas.h"
 
-/* retorna uma lista circular com o poligono convexo a partir dos pontos em L
-*/
+// retorna uma lista circular com o fecho convexo de uma lista L de pontos.
 LISTA * embrulho(LISTA * L);
 
 #endif // embrulho.h

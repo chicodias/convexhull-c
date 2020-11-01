@@ -1,8 +1,13 @@
+/* 
+ * File:   pilha.c
+ * Author: Francisco Rosa Dias de Miranda e Hiago Vinicius Americo
+ */
+
 #include "pilha.h"
 #include "lista.h"
 
 
-
+// aloca uma pilha no heap e devolve seu endereço
 PILHA * criapilha (void) 
 {
    PILHA * pi = malloc (sizeof (PILHA)); // cabeça
@@ -11,6 +16,7 @@ PILHA * criapilha (void)
    return pi;
 }
 
+// empilha um NO *
 void empilha (PILHA * pi, NO * y) 
 { 
    PILHA * nova;
@@ -20,6 +26,7 @@ void empilha (PILHA * pi, NO * y)
    pi->prox = nova; 
 }
 
+// retorna um NO desempilhado
 NO * desempilha (PILHA * pi) 
 {
    if(topo(pi) == NULL)
@@ -33,17 +40,14 @@ NO * desempilha (PILHA * pi)
    return x; 
 }
 
-boolean pilha_vazia(PILHA * pi)
-{
-   return (pi ->prox != NULL);
-}
-
-
+// retorna o topo de uma pilha sem removê-lo
 PILHA * topo(PILHA * pi)
 {
     return pi->prox;
 }
 
+// aloca uma LISTA a partir de uma pilha, desempilhando os elementos
+// e liberando a pilha. retorna o endereço da lista.
 LISTA * pilhatolist(PILHA * pi)
 {
    LISTA * M = lista_criar();

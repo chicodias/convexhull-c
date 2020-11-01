@@ -10,7 +10,7 @@
 #include "pilha.h"
 #include "lista.h"
 
-
+// recebe uma lista de pontos e retorna uma nova lista com Conv(L)
 LISTA * graham (LISTA * L);
 
 #endif

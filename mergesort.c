@@ -1,5 +1,6 @@
-// Iterative C++ program to do merge sort on  
-// linked list 
+// Iterative C program to do merge sort on linked list 
+// based on  https://www.geeksforgeeks.org/c-program-for-merge-sort-for-linked-lists/
+
 #include "lista.h" 
 #include "primitivas.h"
 #include <stdlib.h>
@@ -40,7 +41,7 @@ void merge(ANGS** start1, ANGS** end1,
         swap(ANGS* ,*end1, *end2); 
     } 
   
-    // Merging remaining ANGSdes 
+    // Merging remaining 
     ANGS* astart = *start1, *aend = *end1; 
     ANGS* bstart = *start2, *bend = *end2; 
     ANGS* bendprox = (*end2)->prox; 
@@ -64,11 +65,11 @@ void merge(ANGS** start1, ANGS** end1,
    2, 4, 8, .. until it reaches the length of the  
    linked list. For each gap, the linked list is  
    sorted around the gap.  
-   The prevend stores the address of the last ANGSde after 
-   sorting a part of linked list so that it's prox ANGSde 
+   The prevend stores the address of the last node after 
+   sorting a part of linked list so that it's prox node 
    can be assigned after sorting the succeeding list.  
    temp is used to store the prox start1 because after  
-   sorting, the last ANGSde will be different. So it  
+   sorting, the last node will be different. So it  
    is necessary to store the address of start1 before  
    sorting. We select the start1, end1, start2, end2 for  
    sorting. start1 - end1 may be considered as a list  
@@ -132,7 +133,7 @@ void mergeSort(ANGS** head)
   
 /* Given a reference (pointer to    
    pointer) to the head of a list   
-   and an int, push a new ANGSde on   
+   and an int, push a new node on   
    the front of the list. */
 void push(ANGS** head_ref,  
           int new_data)  

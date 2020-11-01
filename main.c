@@ -43,6 +43,10 @@ int main()
         lista_inserir(l,posx,posy);
     }
 
+    if(pnt<3)
+        printf("ERRO\n");
+        
+
 // ponto que a impressao é iniciada
     scanf(" %c", &inic);
     scanf("%d", &sentido);
@@ -59,11 +63,6 @@ int main()
 
 // algoritmo de graham
    m = embrulho(l);
-
- //  lista_imprimir(l);
-  // lista_inverter(&l);
-  // printf("\n lista invertida:\n");
-   //lista_imprimir(l);
 
   //  end = seconds() - start;
 
