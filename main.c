@@ -43,9 +43,10 @@ int main()
         lista_inserir(l,posx,posy);
     }
 
-    if(pnt<3)
+    if (pnt<3){
         printf("ERRO\n");
-        
+        return 1;
+    }
 
 // ponto que a impressao é iniciada
     scanf(" %c", &inic);
