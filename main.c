@@ -47,64 +47,29 @@ int main()
     scanf("%c", &inic);
     scanf("%d", &sentido);
     
-// chamada da função
-
 //lista_imprimir(l);
-<<<<<<< HEAD
-/*double startW, endW, media=0;
-=======
-double startW,startG, endW,endG, mediaW=0, mediaG=0;
->>>>>>> 8a00038c77f485225e7e652d74827131c37b3c0d
+ 
+//   calculo do tempo
+// double start, end;
+//   start = seconds(); 
 
- for (int i = 0; i < 10; i++)
-{
-<<<<<<< HEAD
-    startW = seconds(); */
-   m = embrulho(l);
-   /* endW = seconds() - startW;
-   media = media + endW;
-}  */
-=======
-    startG = seconds(); 
-    m = graham(l);
-    endG = seconds() - startG;
-   mediaG = mediaG + endG;
-
-   startW = seconds(); 
+// calculo de conv(L)
+// algoritmo do embrulho
     m = embrulho(l);
-    endW = seconds() - startW;
-   mediaW = mediaW + endW;
-}    
->>>>>>> 8a00038c77f485225e7e652d74827131c37b3c0d
-   // lista_imprimir(m);
+
+// algoritmo de graham
+//    m = graham(l);
+
+//    end = seconds() - start;
+
+ lista_imprimir(m);
     
-
-    //printf("Wrap: \n");
-    //printf("%lf\n", endW);
-    //lista_imprimir(m);
     //imprime_fecho(m, inic, sentido);
-    //printf("Graham: \n");
-    //printf("%lf\n", endG);
-    //lista_imprimir(n);
-   printf("%c\n", inic);
-   printf("%d", sentido);
-   imprime_fecho(m, inic, sentido);
-   // mediaW = mediaW + endW;
-    //
-    //}
 
-<<<<<<< HEAD
-    // printf("%d pontos: %.2lf s\n",pnt, media/10);
-
-=======
-    printf("\n Embrulho:\n %d pontos: %.2lf s\n",pnt, mediaW/10);
-    printf("\n Graham:\n %d pontos: %.2lf s\n",pnt, mediaG/10);
->>>>>>> 8a00038c77f485225e7e652d74827131c37b3c0d
 
 // desalocação da lista para encerrar a aplicação
     lista_apagar(&l);
     lista_apagar(&m);
-
     
     return 0;
 }
