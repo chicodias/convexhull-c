@@ -1,5 +1,7 @@
 ---
 output:
+  documentclass: extarticle
+  fontsize: 11pt
   pdf_document: default
   geometry: margin=2cm
 
@@ -9,7 +11,7 @@ output:
 
 ##### Hiago Américo, nUSP: 11218469. Francisco Dias, nUSP: 4402962.
 
-**Objetivo:** O cálculo do ***fecho convexo*** é um problema clássico de Geometria Computacional, sendo utilizado em inúmeras aplicações no dia-a-dia. O programa descrito neste relatório recebe como entrada um conjunto de pontos com coordenadas $(x,y)$ e devolve o fecho convexo deste conjunto, através dos algoritmos conhecidos como **Algoritmo de Embrulho** e o **Algoritmo de Graham**.
+**Objetivo:** O cálculo do ***fecho convexo*** é um problema clássico de Geometria Computacional, sendo utilizado em inúmeras aplicações no dia-a-dia. O programa descrito neste relatório recebe como entrada um conjunto de pontos com coordenadas $(x,y)$ e devolve o fecho convexo deste conjunto, através dos algoritmos conhecidos como **Algoritmo de Embrulho** e **Algoritmo de Graham**.
 
 ****
 
@@ -30,9 +32,8 @@ Uma das primeiras abordagens descritas pelos autores da área é conhecida como 
         inclua-o no fecho
     
     para todos os outros pontos de L
-    enquanto não reincluir o menor y, faça:
-        encontre o ponto que possui maior ângulo
-        com os ultimos dois pontos do fecho e também inclua-o
+      enquanto não incluir o ponto com menor y novamente, faça:
+        encontre o ponto que possui maior ângulo e inclua-o no fecho
 
 Além da lista ligada, para realizar esta implementação precisaremos de outros TADs auxiliares, para armazenar o ângulo entre os vetores visitados no processo iterativo para poder compará-los e encontrar o máximo ou mínimo deste conjunto, conforme ilustrado na Figura 1.
 
@@ -78,10 +79,11 @@ Os padrões de entrada e saída foram gerados conforme especificação do projet
 
 - Algoritmo de Graham
     - **Operações primitivas**: ângulo entre vetores, máximos e mínimos de um conjunto.
-    - **Complexidade**: $O(nk)$, sendo $k$ o número de vértices do fecho.
+    - **Complexidade**: $O(k log(n))$, sendo $k$ o número de vértices do fecho.
 
 
 
+![Tempo empírico vs. Assintoticidade](Rplot.jpeg)
 
 - Medir tempo de execução
 - gráfico de escalabilidade

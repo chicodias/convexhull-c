@@ -44,28 +44,34 @@ int main()
     }
 
 // ponto que a impressao é iniciada
-    scanf("%c", &inic);
+    scanf(" %c", &inic);
     scanf("%d", &sentido);
     
 //lista_imprimir(l);
  
 //   calculo do tempo
-// double start, end;
-//   start = seconds(); 
+ //double start, end;
+ //  start = seconds(); 
 
 // calculo de conv(L)
 // algoritmo do embrulho
-    m = embrulho(l);
+   // m = embrulho(l);
 
 // algoritmo de graham
-//    m = graham(l);
+   m = embrulho(l);
 
-//    end = seconds() - start;
+ //  lista_imprimir(l);
+  // lista_inverter(&l);
+  // printf("\n lista invertida:\n");
+   //lista_imprimir(l);
 
- lista_imprimir(m);
+  //  end = seconds() - start;
+
+
+ //lista_imprimir(m);
     
-    //imprime_fecho(m, inic, sentido);
-
+    imprime_fecho(m, inic, sentido);
+    printf("%.2lf\n",100*(double)(m->n /(double)l->n));
 
 // desalocação da lista para encerrar a aplicação
     lista_apagar(&l);

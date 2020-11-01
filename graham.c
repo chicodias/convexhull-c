@@ -51,8 +51,11 @@ LISTA * graham (LISTA * L)
     while (t != NULL)
     {
         top = topo(pi);
-        q = top->ponto;
-        p = top->prox->ponto;
+        if(top->prox != NULL)
+        {
+            q = top->ponto;
+            p = top->prox->ponto;
+        }
 
   // se r esta a esquerda do vetor PQ (topo da pilha)
   //  empilhamos e olhamos o proximo ponto da lista angul; 

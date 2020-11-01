@@ -44,6 +44,7 @@ NO * criaNo(double x, double y);
 LISTA *lista_criar(void); /*Criacao da lista e retorno do seu ponteiro*/
 boolean lista_apagar(LISTA **l); /*Apaga todo o conteudo da lista e libera o bloco de memoria*/
 void lista_imprimir(LISTA *l); /*Imprime os elementos armazenados na lista*/
+void lista_inverter(NO ** L);
 boolean lista_cheia(LISTA *l); /*Retorna TRUE se nao for possivel alocar mais nos*/
 boolean lista_vazia(LISTA *l); /*Retorna TRUE se a lista estiver vazia*/
 void lista_inserir(LISTA *l, double x, double y); /*Insere o PONTO ordenadamente por y*/
@@ -52,13 +53,10 @@ void lista_remover(LISTA *l, NO * chave); //remove um ponto da lista
 void imprime_fecho(LISTA * l, char inic, int sentido); //imprime uma lista circular na saida padrao
 
 NO * findLowestY(LISTA * L);
+NO * findLowestX(LISTA * L);
+NO * findHighestX(LISTA * L);
+NO * findHighestY(LISTA * L);
 
-/*
-// listas circulares
-void lista_imprimir_circ(NOc *p);
-void lista_imprimir_circ_inv(NOc *p);
-void imprime_fecho(LISTA * l, char inic, int sentido);
-*/
 NO * find(LISTA * l, char coord, int high);
 
 

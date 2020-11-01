@@ -78,12 +78,27 @@ boolean lista_apagar(LISTA **l){
     return TRUE;
 }
 
+void lista_inverter(NO ** L)
+{
+    NO * anterior = NULL,
+    * atual = *L,
+    * proximo = NULL;
+    
+    while (atual != NULL) {
+        proximo = atual->prox;
+        atual->prox = anterior;
+        anterior = atual;
+        atual = proximo;
+    }
+    *L = anterior;
+}
+
 // imprime a lista na saída padrão
 void lista_imprimir(LISTA *l){
     if (l == NULL)
         return;
     for (NO *p = l->inicio; p != NULL; p = p->prox)
-        printf("%.2lf %.2lf\n",p->x, p->y);
+        printf("%.2lf %.2lf %p \n",p->x, p->y, &p->prox);
     
     return;
 } 
@@ -97,6 +112,9 @@ NO * findLowestY(LISTA * L)
     {
         if (q->y > p->y)
             q = p;
+        else if (q->y == p->y)
+            if(q->x < p->x)
+                q = p;
         p = p->prox;
     }
     
@@ -112,6 +130,9 @@ NO * findLowestX(LISTA * L)
     {
         if (q->x > p->x)
             q = p;
+        else if (q->x == p->x)
+            if(q->y < p->y)
+                q = p;
         p = p->prox;
     }
     
@@ -119,7 +140,7 @@ NO * findLowestX(LISTA * L)
 }
 
 // Função que encontra o maior y
-NO * findHigherY(LISTA * L)
+NO * findHighestY(LISTA * L)
 {
     NO * p = L ->inicio, * q = p;
 
@@ -127,12 +148,16 @@ NO * findHigherY(LISTA * L)
     {
         if (q->y < p->y)
             q = p;
+        else if (q->y == p->y)
+            if(q->x < p->x)
+                q = p;
         p = p->prox;
     }
+        return q;
 }
 
 // Função que encontra o maior x
-NO * findHigherX(LISTA * L)
+NO * findHighestX(LISTA * L)
 {
     NO * p = L ->inicio, * q = p;
 
@@ -140,8 +165,12 @@ NO * findHigherX(LISTA * L)
     {
         if(q->x < p->x)
             q = p;
+        else if (q->x == p->x)
+            if(q->y < p->y)
+                q = p;
         p = p->prox;
     }
+        return q;
 }
 
 // recebe uma lista com o fecho e imprime na saida padrao
@@ -153,7 +182,9 @@ void imprime_fecho(LISTA * l, char inic, int sentido)
 {
     NO * first;
 
-    
+   if(sentido)
+        lista_inverter(&(l->inicio));
+
     switch (inic)
     {
     case 'L':
@@ -176,33 +207,22 @@ void imprime_fecho(LISTA * l, char inic, int sentido)
     default:
         break;
     }
-    /*
-    switch (sentido)
+    
+    for (int i = 0; i < l->n; i++)
     {
-        
-    case 1:
-        lista_imprimir(first);
-        break;
-    
-    case 0:
-        lista_imprimir(l);
-        break;
-    
-    default:
-        break;
+        printf("%.2lf %.2lf\n", first->x, first->y);
+        first = first->prox;
+        if(first == NULL)
+            first = l->inicio;
     } 
-    */  
 
 }
 
 // encontra a maior ou a menor coordenada de x ou y e retorna uma lista circular ordenada 
 NO * find(LISTA * l, char coord, int high)
 {
-    printf("procurando %c ", coord);
-    NO * found, * p, * q;
+    NO * p = l->inicio, * q = p->prox, * found = p;
 
-    found = p;
-    q = p->prox;
 
     switch (coord)
     {
@@ -211,7 +231,7 @@ NO * find(LISTA * l, char coord, int high)
         {
         case 1:
             /* encontra o maior x */
-            found = findHigherX(l);
+            found = findHighestX(l);
             break;
         case 0:
             /* encontra o menor x */
@@ -227,7 +247,7 @@ NO * find(LISTA * l, char coord, int high)
         {
         case 1:
             /* encontra o maior y */
-            found = findHigherY(l);
+            found = findHighestY(l);
             break;
         case 0:
             /* encontra o menor y */
