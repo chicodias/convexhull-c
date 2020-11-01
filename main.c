@@ -50,15 +50,20 @@ int main()
 // chamada da função
 
 //lista_imprimir(l);
-double startW, endW, media=0;
+double startW,startG, endW,endG, mediaW=0, mediaG=0;
 
-for (int i = 0; i < 10; i++)
+ for (int i = 0; i < 10; i++)
 {
-    startW = seconds();
-   m = embrulho(l);
-   endW = seconds() - startW;
-   media = media + endW;
-}   
+    startG = seconds(); 
+    m = graham(l);
+    endG = seconds() - startG;
+   mediaG = mediaG + endG;
+
+   startW = seconds(); 
+    m = embrulho(l);
+    endW = seconds() - startW;
+   mediaW = mediaW + endW;
+}    
    // lista_imprimir(m);
     
 
@@ -71,11 +76,11 @@ for (int i = 0; i < 10; i++)
     //lista_imprimir(n);
     //imprime_fecho(m, inic, sentido);
    // mediaW = mediaW + endW;
-    //mediaG = mediaG + endG;
+    //
     //}
 
-    printf("%d pontos: %.2lf s\n",pnt, media/10);
-
+    printf("\n Embrulho:\n %d pontos: %.2lf s\n",pnt, mediaW/10);
+    printf("\n Graham:\n %d pontos: %.2lf s\n",pnt, mediaG/10);
 
 // desalocação da lista para encerrar a aplicação
     lista_apagar(&l);

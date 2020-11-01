@@ -61,7 +61,7 @@ ANGS * maxAng(ANGULOS * l);
 // Compara dos pontos p e q
 boolean pontosIguais(NO * p, NO * q);
 
-// ordenaa lista de angulos
+/* // ordenaa lista de angulos
 void MergeSort(ANGS ** headRef);
 
 // função de ordenação auxiliar que junta duas listas ordenadas
@@ -69,6 +69,6 @@ ANGS* SortedMerge(ANGS* a, ANGS* b);
 
 // função auxiliar que divide a lista ao meio
 void FrontBackSplit(ANGS* source, 
-                    ANGS** frontRef, ANGS** backRef);
+                    ANGS** frontRef, ANGS** backRef); */
 
 #endif

@@ -1,6 +1,7 @@
 #include "primitivas.h"
 #include "graham.h"
 #include "pilha.h"
+#include "mergesort.h"
 #include <stdio.h>
 
 
@@ -35,10 +36,11 @@ LISTA * graham (LISTA * L)
     // libera o ponto auxiliar criado
     free(q);
     
-    // ordena a lista de angulos
-    MergeSort(&(angul->inicio));
 
-    q = angul->inicio->ponto;
+    // ordena a lista de angulos
+    mergeSort(&(angul->inicio));
+    
+     q = angul->inicio->ponto;
 
     // insere os dois primeiros pontos na pilha
     empilha(pi, p);

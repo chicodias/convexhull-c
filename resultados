@@ -1,0 +1,54 @@
+
+ Embrulho:
+ 100000 pontos: 0.84 s
+
+ Graham:
+ 100000 pontos: 0.15 s
+
+ Embrulho:
+ 200000 pontos: 1.72 s
+
+ Graham:
+ 200000 pontos: 0.45 s
+
+ Embrulho:
+ 300000 pontos: 3.47 s
+
+ Graham:
+ 300000 pontos: 0.78 s
+
+ Embrulho:
+ 400000 pontos: 4.26 s
+
+ Graham:
+ 400000 pontos: 1.09 s
+
+ Embrulho:
+ 500000 pontos: 4.61 s
+
+ Graham:
+ 500000 pontos: 1.38 s
+
+ Embrulho:
+ 700000 pontos: 8.66 s
+
+ Graham:
+ 700000 pontos: 2.27 s
+
+ Embrulho:
+ 800000 pontos: 9.91 s
+
+ Graham:
+ 800000 pontos: 2.49 s
+
+ Embrulho:
+ 900000 pontos: 9.81 s
+
+ Graham:
+ 900000 pontos: 2.76 s
+
+ Embrulho:
+ 1000000 pontos: 11.08 s
+
+ Graham:
+ 1000000 pontos: 3.12 s

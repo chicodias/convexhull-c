@@ -161,7 +161,7 @@ boolean pontosIguais(NO * p, NO * q)
     return FALSE;
 }
 
-
+/* 
 // ordena a lista ligada alterando os ponteiros *prox
 void MergeSort(ANGS ** headRef) 
 { 
@@ -169,7 +169,7 @@ void MergeSort(ANGS ** headRef)
     ANGS* a; 
     ANGS* b; 
   
-    /* Caso Base -- tamanhos 0 ou 1 */
+    // Caso Base -- tamanhos 0 ou 1
     if ((head == NULL) || (head->prox == NULL)) { 
         return; 
     } 
@@ -196,7 +196,7 @@ ANGS* SortedMerge(ANGS* a, ANGS* b)
     else if (b == NULL) 
         return (a); 
   
-    // pega um dois dois e envia pra recursao
+    // pega um dos dois e envia pra recursao
     if (a->ang <= b->ang) { 
         result = a; 
         result->prox = SortedMerge(a->prox, b); 
@@ -230,5 +230,4 @@ void FrontBackSplit(ANGS* source,
     *frontRef = source; 
     *backRef = slow->prox; 
     slow->prox = NULL; 
-} 
-  
+}  */
