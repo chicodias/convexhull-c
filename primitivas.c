@@ -121,84 +121,6 @@ ANGS * maxAng(ANGULOS * l)
     return max;
 }
 
-// insere um elemento na lista ordenadamente de acordo com o angulo
-void ins_ang (ANGULOS * l, double y, NO * x)
-{
-    /* cria novo nó */
-    ANGS* novo = (ANGS *)malloc(sizeof(ANGS));
-
-    novo->ang = y;
-    novo->ponto = x;
-    novo->prox = NULL;
-
-    /* ponteiro para elemento anterior */   
-    ANGS* ant = NULL;     
-    
-    /* ponteiro para percorrer a lista*/   
-    ANGS* p = l->inicio;          
-    
-    /* procura posição de inserção */   
-    while (p != NULL && p->ang < y) 
-    {      
-        ant = p;      
-        p = p->prox;
-    }   
-    
-    /* insere elemento */   
-    if (ant == NULL) 
-    {   /* insere elemento no início */      
-        novo->prox = l->inicio;      
-        l->inicio = novo;   
-    }
-    
-    else 
-    {   /* insere elemento no meio da lista */      
-        novo->prox = ant->prox;      
-        ant->prox = novo;   
-    }
-}
-
-
-// insere um elemento na lista ordenadamente de acordo com o angulo
-void ins_ang_dec (ANGULOS * l, double y, NO * x)
-{
-    /* cria novo nó */
-    ANGS* novo = (ANGS *)malloc(sizeof(ANGS));
-
-    novo->ang = y;
-    novo->ponto = x;
-    novo->prox = NULL;
-
-    /* ponteiro para elemento anterior */   
-    ANGS* ant = NULL;     
-    
-    /* ponteiro para percorrer a lista*/   
-    ANGS* p = l->inicio;          
-    
-    
-    /* procura posição de inserção */   
-    while (p != NULL && p->ang > y) 
-    {      
-        ant = p;      
-        p = p->prox;
-    }   
-    
-    /* insere elemento */   
-    if (ant == NULL) 
-    {   /* insere elemento no início */      
-        novo->prox = l->inicio;      
-        l->inicio = novo;   
-    }
-    
-    else 
-    {   /* insere elemento no meio da lista */      
-        novo->prox = ant->prox;      
-        ant->prox = novo;   
-    }
-
-    }
-
-
 // imprime a lista na saída padrão
 void angs_imprimir(ANGULOS *l){
     if (l == NULL)
@@ -238,3 +160,74 @@ boolean pontosIguais(NO * p, NO * q)
 
     return FALSE;
 }
+
+/* 
+// ordena a lista ligada alterando os ponteiros *prox
+void MergeSort(ANGS ** headRef) 
+{ 
+    ANGS* head = *headRef; 
+    ANGS* a; 
+    ANGS* b; 
+  
+    // Caso Base -- tamanhos 0 ou 1
+    if ((head == NULL) || (head->prox == NULL)) { 
+        return; 
+    } 
+  
+    // Divide 'a' e 'b' em sublistas auxiliares
+    FrontBackSplit(head, &a, &b); 
+  
+    // ordena as sublistas recursivamente
+    MergeSort(&a); 
+    MergeSort(&b); 
+  
+    // junta novamente as listas já ordenadas
+    *headRef = SortedMerge(a, b); 
+} 
+
+// junta duas listas ordenadas
+ANGS* SortedMerge(ANGS* a, ANGS* b) 
+{ 
+    ANGS* result = NULL; 
+  
+    // casos base
+    if (a == NULL) 
+        return (b); 
+    else if (b == NULL) 
+        return (a); 
+  
+    // pega um dos dois e envia pra recursao
+    if (a->ang <= b->ang) { 
+        result = a; 
+        result->prox = SortedMerge(a->prox, b); 
+    } 
+    else { 
+        result = b; 
+        result->prox = SortedMerge(a, b->prox); 
+    } 
+    return (result); 
+} 
+  
+// divide a lista ao meio
+void FrontBackSplit(ANGS* source, 
+                    ANGS** frontRef, ANGS** backRef) 
+{ 
+    ANGS* fast; 
+    ANGS* slow; 
+    slow = source; 
+    fast = source->prox; 
+  
+    // fast corre dois nos, para cada um de slow
+    while (fast != NULL) { 
+        fast = fast->prox; 
+        if (fast != NULL) { 
+            slow = slow->prox; 
+            fast = fast->prox; 
+        } 
+    } 
+  
+    // slow está um antes do meio da lista, dividindo daí
+    *frontRef = source; 
+    *backRef = slow->prox; 
+    slow->prox = NULL; 
+}  */

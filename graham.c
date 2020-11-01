@@ -1,6 +1,7 @@
 #include "primitivas.h"
 #include "graham.h"
 #include "pilha.h"
+#include "mergesort.h"
 #include <stdio.h>
 
 
@@ -19,22 +20,31 @@ LISTA * graham (LISTA * L)
     ANGULOS * angul = criarAng();
     int i;
 
-    // menor coord y
-    p = L->inicio;
-  
-    // alocacao no primeiro no
+    p = findLowestY(L);
+
+
+    // inicializacao do algoritmo
+
+    // alocacao no primeiro no (linha horizontal)
     q = criaNo(p->x + 100, p->y);
     
-    // calcula o angulo com todos os outros caras do conjunto e a linha horizontal
-    // os angulos sao inseridos em ordenação crescente.
-    for (r = L->inicio->prox; r != NULL; r = r->prox)
-       ins_ang(angul, angulo(p, q, r), r);
-    
+    // calcula o angulo entre os outros pontos do conjunto e a linha horizontal
+    for (r = L->inicio; r != NULL; r = r->prox)
+        if (!pontosIguais(p,r))
+            insere_inicio_ang(angul, angulo(p, q, r), r);
+
     // libera o ponto auxiliar criado
     free(q);
+    
 
+    // ordena a lista de angulos
+    mergeSort(&(angul->inicio));
+    
+     q = angul->inicio->ponto;
+
+    // insere os dois primeiros pontos na pilha
     empilha(pi, p);
-    empilha(pi, angul->inicio->ponto);
+    empilha(pi, q);
     
     t = angul->inicio->prox;
     
@@ -44,16 +54,16 @@ LISTA * graham (LISTA * L)
         q = top->ponto;
         p = top->prox->ponto;
 
-    /* se r esta a esquerda do vetor PQ (topo da pilha)
-      empilhamos e olhamos o proximo ponto da lista angul; */
+  // se r esta a esquerda do vetor PQ (topo da pilha)
+  //  empilhamos e olhamos o proximo ponto da lista angul; 
         if (esquerda(p,q,t->ponto))
         {
             empilha(pi,t->ponto);
             t = t->prox;
         }
 
-/*    agora, se o ponto em questao esta a direita deste mesmo vetor,
-      desempilhamos q e voltamos a analisar a pilha. */
+//    agora, se o ponto em questao esta a direita deste mesmo vetor,
+      //desempilhamos q e voltamos a analisar a pilha. 
         else
             desempilha(pi);
     }
