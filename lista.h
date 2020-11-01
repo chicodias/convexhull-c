@@ -49,21 +49,17 @@ boolean lista_vazia(LISTA *l); /*Retorna TRUE se a lista estiver vazia*/
 void lista_inserir(LISTA *l, double x, double y); /*Insere o PONTO ordenadamente por y*/
 void lista_inserir_fim(LISTA *l, double x, double y); /*Insere o PONTO no fim da lista*/
 void lista_remover(LISTA *l, NO * chave); //remove um ponto da lista
-void imprime_fecho(LISTA * l, int inic, char sentido); //imprime uma lista circular na saida padrao
+void imprime_fecho(LISTA * l, char inic, int sentido); //imprime uma lista circular na saida padrao
 
 NO * findLowestY(LISTA * L);
 
-
+/*
 // listas circulares
 void lista_imprimir_circ(NOc *p);
 void lista_imprimir_circ_inv(NOc *p);
-void imprime_fecho(LISTA * l, int inic, char sentido);
-NOc * find(LISTA * l, char coord, int high);
+void imprime_fecho(LISTA * l, char inic, int sentido);
+*/
+NO * find(LISTA * l, char coord, int high);
 
-//recebe uma lista simples e retorna uma duplamente encadeada circular 
-NOc * listolisc(LISTA * l);
-
-// desaloca uma lista circular da memoria
-void liberaListaC(NOc * l);
 
 #endif /* LISTA_H */

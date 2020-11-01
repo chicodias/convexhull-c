@@ -127,7 +127,7 @@ int compara(NO * p, NO * q)
     //positivo se p-q>0
     
 }
-
+// Função que encontra o menor y 
 NO * findLowestY(LISTA * L)
 {
     NO * p = L->inicio, * q = p;
@@ -142,6 +142,46 @@ NO * findLowestY(LISTA * L)
     return q;
 }
 
+// Função que encontra o menor x 
+NO * findLowestX(LISTA * L)
+{
+    NO * p = L->inicio, * q = p;
+    
+    while (p != NULL)
+    {
+        if (q->x > p->x)
+            q = p;
+        p = p->prox;
+    }
+    
+    return q;
+}
+
+// Função que encontra o maior y
+NO * findHigherY(LISTA * L)
+{
+    NO * p = L ->inicio, * q = p;
+
+    while(p != NULL)
+    {
+        if (q->y < p->y)
+            q = p;
+        p = p->prox;
+    }
+}
+
+// Função que encontra o maior x
+NO * findHigherX(LISTA * L)
+{
+    NO * p = L ->inicio, * q = p;
+
+    while(p != NULL)
+    {
+        if(q->x < p->x)
+            q = p;
+        p = p->prox;
+    }
+}
 // remove um elemento da lista e retorna TRUE se conseguir.
 // se não encontrar, retorna FALSE
 // se a lista estiver vazia, retorna ERRO
@@ -205,10 +245,12 @@ void lista_inserir_fim (LISTA* l, double x, double y)
 // os pontos pertencentes de acordo com as variáveis:
 // inic: ponto que a impressao é iniciada (L, R, D ou U)
 // sentido: 0 - anti horario; 1 - horario
-void imprime_fecho(LISTA * l, int inic, char sentido)
+
+void imprime_fecho(LISTA * l, char inic, int sentido)
 {
+    NO * first;
+
     
-    NOc * first;
     switch (inic)
     {
     case 'L':
@@ -225,34 +267,37 @@ void imprime_fecho(LISTA * l, int inic, char sentido)
 
     case 'U':
         first = find(l, 'y', 1);
+        
         break;
 
     default:
         break;
     }
-    /* switch (sentido)
+    /*
+    switch (sentido)
     {
+        
     case 1:
-        lista_imprimir_circ(first);
+        lista_imprimir(first);
         break;
     
     case 0:
-        lista_imprimir_circ_inv(first);
+        lista_imprimir(l);
         break;
     
     default:
         break;
-    }   
-     */liberaListaC(first);
+    } 
+    */  
+
 }
 
 // encontra a maior ou a menor coordenada de x ou y e retorna uma lista circular ordenada 
-NOc * find(LISTA * l, char coord, int high)
+NO * find(LISTA * l, char coord, int high)
 {
     printf("procurando %c ", coord);
-    NOc * found, * p, * q;
+    NO * found, * p, * q;
 
-    p = listolisc(l);
     found = p;
     q = p->prox;
 
@@ -263,31 +308,11 @@ NOc * find(LISTA * l, char coord, int high)
         {
         case 1:
             /* encontra o maior x */
-            while (p != q)
-            {
-                if(found->x < q->x)
-                    found = q;
-
-                else if(found->x == q->x)
-                    if(found->y > q->y)
-                        found = q;   
-
-                q = q->prox;
-            }
+            found = findHigherX(l);
             break;
         case 0:
             /* encontra o menor x */
-            while (p != q)
-            {
-                if(found->x > q->x)
-                    found = q;
-
-                else if(found->x == q->x)
-                    if(found->y > q->y)
-                        found = q;   
-
-                q = q->prox;
-            }
+            found = findLowestX(l);
             break;
         default:
             break;
@@ -299,32 +324,13 @@ NOc * find(LISTA * l, char coord, int high)
         {
         case 1:
             /* encontra o maior y */
-            while (p != q)
-            {
-                if(found->y < q->y)
-                    found = q;
-
-                else if(found->y == q->y)
-                    if(found->x > q->x)
-                        found = q;   
-
-                q = q->prox;
-            }
+            found = findHigherY(l);
             break;
         case 0:
             /* encontra o menor y */
-            while (p != q)
-            {
-                if(found->y > q->y)
-                    found = q;
-
-                else if(found->y == q->y)
-                    if(found->x > q->x)
-                        found = q;   
-
-                q = q->prox;
-            }
+            found = findLowestY(l);
             break;
+
         default:
             break;
         }
@@ -336,7 +342,7 @@ NOc * find(LISTA * l, char coord, int high)
     return found;
 }
 
-
+/*
 NOc * criaNoc(double x, double y)
 {
     NOc * p = (NOc *) malloc(sizeof(NOc));
@@ -348,6 +354,7 @@ NOc * criaNoc(double x, double y)
 
     return p;
 }
+
 
 NOc * listolisc(LISTA * l)
 {
@@ -371,7 +378,7 @@ NOc * listolisc(LISTA * l)
 printf("%.2lf,%.2lf e %.2lf,%.2lf", inic->x,inic->y, inic->ant->x, inic->ant->y);
     return inic;
 }
-
+/*
 void liberaListaC(NOc * l)
 {
     NOc * p = l , * q = l->prox, *tmp;
@@ -385,3 +392,4 @@ void liberaListaC(NOc * l)
     }
     free(p);
 }
+*/
